@@ -1,0 +1,264 @@
+{
+  "modelVersion": "demo-step-ranker-v1",
+  "modelSha256": "87c5288fe0ae8b7d318979124f6aafff36db92a59cd902281c8ea5eb0d27f022",
+  "pythonVersion": "3.14.7",
+  "sklearnVersion": "1.9.1",
+  "dataSource": "fresh synthetic arithmetic traces; not real-world agent logs",
+  "seeds": [
+    101,
+    202,
+    303
+  ],
+  "scenariosPerSeed": 100,
+  "datasetFingerprints": [
+    {
+      "seed": 101,
+      "sha256": "df9375198873de8d566efe0f5af94e3271c1b207be11bb0067be8f47b2ed6371"
+    },
+    {
+      "seed": 202,
+      "sha256": "28d67e4bc7f6cbb23cccb6ca075f7dc829158abf4975a08aa435807b35a4aed6"
+    },
+    {
+      "seed": 303,
+      "sha256": "70ff9583bf58c3f27d7d901aca45b37b415e7473fe51316ddc70587ec5945a7a"
+    }
+  ],
+  "results": {
+    "learned": {
+      "runCount": 1500,
+      "failedRunCount": 1200,
+      "healthyRunCount": 300,
+      "top1Localization": 1.0,
+      "top3Localization": 1.0,
+      "meanReciprocalRank": 1.0,
+      "healthyFalsePositiveRate": 0.0,
+      "failureDetectionPrecision": 1.0,
+      "failureDetectionRecall": 1.0,
+      "failureDetectionF1": 1.0
+    },
+    "lastError": {
+      "runCount": 1500,
+      "failedRunCount": 1200,
+      "healthyRunCount": 300,
+      "top1Localization": 0.0,
+      "top3Localization": 0.0,
+      "meanReciprocalRank": 0.0,
+      "healthyFalsePositiveRate": 0.0,
+      "failureDetectionPrecision": 1.0,
+      "failureDetectionRecall": 1.0,
+      "failureDetectionF1": 1.0
+    },
+    "firstLocalEvidence": {
+      "runCount": 1500,
+      "failedRunCount": 1200,
+      "healthyRunCount": 300,
+      "top1Localization": 1.0,
+      "top3Localization": 1.0,
+      "meanReciprocalRank": 1.0,
+      "healthyFalsePositiveRate": 0.0,
+      "failureDetectionPrecision": 1.0,
+      "failureDetectionRecall": 1.0,
+      "failureDetectionF1": 1.0
+    }
+  },
+  "perFailureType": {
+    "answer_mismatch": {
+      "learned": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 1.0,
+        "top3Localization": 1.0,
+        "meanReciprocalRank": 1.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      },
+      "lastError": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 0.0,
+        "top3Localization": 0.0,
+        "meanReciprocalRank": 0.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      },
+      "firstLocalEvidence": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 1.0,
+        "top3Localization": 1.0,
+        "meanReciprocalRank": 1.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      }
+    },
+    "calculation_error": {
+      "learned": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 1.0,
+        "top3Localization": 1.0,
+        "meanReciprocalRank": 1.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      },
+      "lastError": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 0.0,
+        "top3Localization": 0.0,
+        "meanReciprocalRank": 0.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      },
+      "firstLocalEvidence": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 1.0,
+        "top3Localization": 1.0,
+        "meanReciprocalRank": 1.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      }
+    },
+    "invalid_selection": {
+      "learned": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 1.0,
+        "top3Localization": 1.0,
+        "meanReciprocalRank": 1.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      },
+      "lastError": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 0.0,
+        "top3Localization": 0.0,
+        "meanReciprocalRank": 0.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      },
+      "firstLocalEvidence": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 1.0,
+        "top3Localization": 1.0,
+        "meanReciprocalRank": 1.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      }
+    },
+    "normal": {
+      "learned": {
+        "runCount": 300,
+        "failedRunCount": 0,
+        "healthyRunCount": 300,
+        "top1Localization": null,
+        "top3Localization": null,
+        "meanReciprocalRank": null,
+        "healthyFalsePositiveRate": 0.0,
+        "failureDetectionPrecision": null,
+        "failureDetectionRecall": null,
+        "failureDetectionF1": null
+      },
+      "lastError": {
+        "runCount": 300,
+        "failedRunCount": 0,
+        "healthyRunCount": 300,
+        "top1Localization": null,
+        "top3Localization": null,
+        "meanReciprocalRank": null,
+        "healthyFalsePositiveRate": 0.0,
+        "failureDetectionPrecision": null,
+        "failureDetectionRecall": null,
+        "failureDetectionF1": null
+      },
+      "firstLocalEvidence": {
+        "runCount": 300,
+        "failedRunCount": 0,
+        "healthyRunCount": 300,
+        "top1Localization": null,
+        "top3Localization": null,
+        "meanReciprocalRank": null,
+        "healthyFalsePositiveRate": 0.0,
+        "failureDetectionPrecision": null,
+        "failureDetectionRecall": null,
+        "failureDetectionF1": null
+      }
+    },
+    "tool_error": {
+      "learned": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 1.0,
+        "top3Localization": 1.0,
+        "meanReciprocalRank": 1.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      },
+      "lastError": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 0.0,
+        "top3Localization": 0.0,
+        "meanReciprocalRank": 0.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      },
+      "firstLocalEvidence": {
+        "runCount": 300,
+        "failedRunCount": 300,
+        "healthyRunCount": 0,
+        "top1Localization": 1.0,
+        "top3Localization": 1.0,
+        "meanReciprocalRank": 1.0,
+        "healthyFalsePositiveRate": null,
+        "failureDetectionPrecision": 1.0,
+        "failureDetectionRecall": 1.0,
+        "failureDetectionF1": 1.0
+      }
+    }
+  },
+  "interpretation": "The rules use the same observable local checks as the model. Matching the rules does not demonstrate an ML advantage. Fresh seeds test reproducibility within one generator, not workflow generalization.",
+  "limitations": [
+    "Fixed five-step workflow and single injected fault per failed run",
+    "Hand-engineered arithmetic consistency features",
+    "Uncalibrated scores; fixed 0.5 abstention threshold",
+    "No arbitrary-agent, real-world, or simultaneous-fault validation"
+  ]
+}

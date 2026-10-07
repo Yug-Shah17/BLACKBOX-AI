@@ -1,0 +1,215 @@
+{
+  "dataSource": "fictional-demo",
+  "diagnosisMode": "rules",
+  "workflowVersion": "document-qa-v2",
+  "scenarioSha256": "263da8d6c4db4bd78146e9f3343bea8d16c5759a60aae9cce382e83908035c20",
+  "caseCount": 12,
+  "healthyCaseCount": 3,
+  "top1Localization": 1.0,
+  "fixtureCorrectionSuccessRate": 1.0,
+  "wrongCorrectionFailureRate": 1.0,
+  "limitations": "Three fictional document sets, four injected faults, fixed four-step workflow; rule diagnosis, no learned document model or real-world generalization evidence.",
+  "cases": [
+    {
+      "scenario": "registration",
+      "fault": "missing_retrieval",
+      "expectedStep": 1,
+      "predictedStep": 1,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [],
+      "executedSteps": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "registration",
+      "fault": "wrong_source",
+      "expectedStep": 2,
+      "predictedStep": 2,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1
+      ],
+      "executedSteps": [
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "registration",
+      "fault": "unsupported_answer",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "registration",
+      "fault": "incorrect_citation",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "eligibility",
+      "fault": "missing_retrieval",
+      "expectedStep": 1,
+      "predictedStep": 1,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [],
+      "executedSteps": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "eligibility",
+      "fault": "wrong_source",
+      "expectedStep": 2,
+      "predictedStep": 2,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1
+      ],
+      "executedSteps": [
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "eligibility",
+      "fault": "unsupported_answer",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "eligibility",
+      "fault": "incorrect_citation",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "submission",
+      "fault": "missing_retrieval",
+      "expectedStep": 1,
+      "predictedStep": 1,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [],
+      "executedSteps": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "submission",
+      "fault": "wrong_source",
+      "expectedStep": 2,
+      "predictedStep": 2,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1
+      ],
+      "executedSteps": [
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "submission",
+      "fault": "unsupported_answer",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4
+      ]
+    },
+    {
+      "scenario": "submission",
+      "fault": "incorrect_citation",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4
+      ]
+    }
+  ]
+}

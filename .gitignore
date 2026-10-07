@@ -147,3 +147,20 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Python runtime and local Black Box state
+.venv/
+.venv-*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+backend/data/state.json
+backend/data/state-*.tmp
+backend/data/documents/
+
+# Legacy HTTP samples are not training inputs for the agent model.
+data/trace_dataset.csv
+data/trace_dataset.jsonl

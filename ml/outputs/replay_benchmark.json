@@ -1,0 +1,410 @@
+{
+  "scope": "20 controlled executions: four faults x five numeric boundary pairs",
+  "correctionSource": "Fixture-provided correct outputs; not model-generated repairs",
+  "storage": "Temporary isolated store; live run history untouched",
+  "summary": {
+    "caseCount": 20,
+    "top1Localization": 1.0,
+    "fixtureCorrectionSuccessRate": 1.0,
+    "incorrectCorrectionRejectionRate": 1.0,
+    "originalPreservationRate": 1.0
+  },
+  "cases": [
+    {
+      "a": 0,
+      "b": 0,
+      "fault": "tool_error",
+      "expectedStep": 1,
+      "predictedStep": 1,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [],
+      "executedSteps": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 1
+    },
+    {
+      "a": 0,
+      "b": 0,
+      "fault": "invalid_selection",
+      "expectedStep": 2,
+      "predictedStep": 2,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1
+      ],
+      "executedSteps": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 2
+    },
+    {
+      "a": 0,
+      "b": 0,
+      "fault": "calculation_error",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 3
+    },
+    {
+      "a": 0,
+      "b": 0,
+      "fault": "answer_mismatch",
+      "expectedStep": 4,
+      "predictedStep": 4,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2,
+        3
+      ],
+      "executedSteps": [
+        4,
+        5
+      ],
+      "firstDivergence": 4
+    },
+    {
+      "a": -12,
+      "b": 30,
+      "fault": "tool_error",
+      "expectedStep": 1,
+      "predictedStep": 1,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [],
+      "executedSteps": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 1
+    },
+    {
+      "a": -12,
+      "b": 30,
+      "fault": "invalid_selection",
+      "expectedStep": 2,
+      "predictedStep": 2,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1
+      ],
+      "executedSteps": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 2
+    },
+    {
+      "a": -12,
+      "b": 30,
+      "fault": "calculation_error",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 3
+    },
+    {
+      "a": -12,
+      "b": 30,
+      "fault": "answer_mismatch",
+      "expectedStep": 4,
+      "predictedStep": 4,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2,
+        3
+      ],
+      "executedSteps": [
+        4,
+        5
+      ],
+      "firstDivergence": 4
+    },
+    {
+      "a": -100,
+      "b": -50,
+      "fault": "tool_error",
+      "expectedStep": 1,
+      "predictedStep": 1,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [],
+      "executedSteps": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 1
+    },
+    {
+      "a": -100,
+      "b": -50,
+      "fault": "invalid_selection",
+      "expectedStep": 2,
+      "predictedStep": 2,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1
+      ],
+      "executedSteps": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 2
+    },
+    {
+      "a": -100,
+      "b": -50,
+      "fault": "calculation_error",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 3
+    },
+    {
+      "a": -100,
+      "b": -50,
+      "fault": "answer_mismatch",
+      "expectedStep": 4,
+      "predictedStep": 4,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2,
+        3
+      ],
+      "executedSteps": [
+        4,
+        5
+      ],
+      "firstDivergence": 4
+    },
+    {
+      "a": 1000000,
+      "b": -1000000,
+      "fault": "tool_error",
+      "expectedStep": 1,
+      "predictedStep": 1,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [],
+      "executedSteps": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 1
+    },
+    {
+      "a": 1000000,
+      "b": -1000000,
+      "fault": "invalid_selection",
+      "expectedStep": 2,
+      "predictedStep": 2,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1
+      ],
+      "executedSteps": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 2
+    },
+    {
+      "a": 1000000,
+      "b": -1000000,
+      "fault": "calculation_error",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 3
+    },
+    {
+      "a": 1000000,
+      "b": -1000000,
+      "fault": "answer_mismatch",
+      "expectedStep": 4,
+      "predictedStep": 4,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2,
+        3
+      ],
+      "executedSteps": [
+        4,
+        5
+      ],
+      "firstDivergence": 4
+    },
+    {
+      "a": 1000000,
+      "b": 1000000,
+      "fault": "tool_error",
+      "expectedStep": 1,
+      "predictedStep": 1,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [],
+      "executedSteps": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 1
+    },
+    {
+      "a": 1000000,
+      "b": 1000000,
+      "fault": "invalid_selection",
+      "expectedStep": 2,
+      "predictedStep": 2,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1
+      ],
+      "executedSteps": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 2
+    },
+    {
+      "a": 1000000,
+      "b": 1000000,
+      "fault": "calculation_error",
+      "expectedStep": 3,
+      "predictedStep": 3,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2
+      ],
+      "executedSteps": [
+        3,
+        4,
+        5
+      ],
+      "firstDivergence": 3
+    },
+    {
+      "a": 1000000,
+      "b": 1000000,
+      "fault": "answer_mismatch",
+      "expectedStep": 4,
+      "predictedStep": 4,
+      "correctedOutcome": "success",
+      "wrongCorrectionOutcome": "failed",
+      "originalPreserved": true,
+      "reusedSteps": [
+        1,
+        2,
+        3
+      ],
+      "executedSteps": [
+        4,
+        5
+      ],
+      "firstDivergence": 4
+    }
+  ],
+  "limitations": "Not evidence of general automatic repair or real-world agent reliability."
+}

@@ -1,0 +1,35 @@
+BLACK BOX FRONTEND
+
+Redesigned Next.js workspace connected to the actual local FastAPI backend.
+The old mock-data modules and unused original components are retained as source
+reference only; the current pages use src/components/workspace and src/lib/api.ts.
+No mock fallback is used when the backend is unavailable.
+
+From frontend/:
+npm ci
+npm run dev -- --port 3000
+Open http://localhost:3000
+
+Start the backend separately from the repository root:
+.\.venv\Scripts\python.exe -B -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --workers 1
+
+Next proxies /api/blackbox to http://127.0.0.1:8000 by default.
+Set BACKEND_URL before starting Next to use another backend address.
+Fonts are locally served from npm packages; no Google Fonts request is needed.
+
+Current pages: recorded runs, trace inspection/diagnosis, structured checkpoint
+replay, persisted branch comparison, measured evaluation, observed trace exports,
+and locally saved light/dark and table-density preferences.
+
+New run opens a real local arithmetic-agent execution, not an invented trace.
+Replay outcomes and comparison come from the backend. Ranking scores are not
+presented as confidence. Legacy travel fixtures are visibly marked as legacy;
+they have no supported ML diagnosis or restorable checkpoints.
+Evaluation is controlled synthetic arithmetic data, not general agent accuracy.
+
+Build: npm run build
+Lint the redesigned surface:
+npm run lint -- src/components/workspace src/lib/api.ts src/app/layout.tsx src/app/runs src/app/trace src/app/evaluation src/app/datasets src/app/settings next.config.ts
+
+Known boundary: UI currently supports the bounded arithmetic workflow; broader
+agent domains require backend contracts, training data, and evaluation first.

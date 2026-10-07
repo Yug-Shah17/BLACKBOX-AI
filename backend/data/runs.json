@@ -1,0 +1,105 @@
+[
+  {
+    "runId": "run_001",
+    "task": "Find the cheapest flight from Mumbai to Bengaluru tomorrow",
+    "agentName": "travel-agent",
+    "outcome": "failed",
+    "durationMs": 8400,
+    "timestamp": "2026-10-03T15:30:00Z",
+    "predictedFailureStep": 5,
+    "diagnosisConfidence": 0.91,
+    "steps": [
+      {
+        "stepId": 1,
+        "stepType": "decision",
+        "input": "Parse user request",
+        "output": "Understand travel intent",
+        "toolName": null,
+        "latencyMs": 100,
+        "tokenCount": 50,
+        "retryCount": 0,
+        "status": "success",
+        "suspicionScore": 0.0,
+        "predictedFailureType": null
+      },
+      {
+        "stepId": 2,
+        "stepType": "decision",
+        "input": "Intent understood",
+        "output": "Plan search",
+        "toolName": null,
+        "latencyMs": 150,
+        "tokenCount": 60,
+        "retryCount": 0,
+        "status": "success",
+        "suspicionScore": 0.0,
+        "predictedFailureType": null
+      },
+      {
+        "stepId": 3,
+        "stepType": "decision",
+        "input": "Plan ready",
+        "output": "Select tool for flight search",
+        "toolName": null,
+        "latencyMs": 120,
+        "tokenCount": 45,
+        "retryCount": 0,
+        "status": "success",
+        "suspicionScore": 0.0,
+        "predictedFailureType": null
+      },
+      {
+        "stepId": 4,
+        "stepType": "decision",
+        "input": "Evaluating tools",
+        "output": "Tool selected",
+        "toolName": null,
+        "latencyMs": 110,
+        "tokenCount": 30,
+        "retryCount": 0,
+        "status": "success",
+        "suspicionScore": 0.0,
+        "predictedFailureType": null
+      },
+      {
+        "stepId": 5,
+        "stepType": "tool_call",
+        "input": "Mumbai to Bengaluru tomorrow",
+        "output": "Weather in Bengaluru is 28C",
+        "toolName": "weather_search",
+        "latencyMs": 820,
+        "tokenCount": 210,
+        "retryCount": 0,
+        "status": "success",
+        "suspicionScore": 0.91,
+        "predictedFailureType": "wrong_tool"
+      },
+      {
+        "stepId": 6,
+        "stepType": "retrieval",
+        "input": "Process tool output",
+        "output": "Irrelevant weather result",
+        "toolName": null,
+        "latencyMs": 300,
+        "tokenCount": 150,
+        "retryCount": 0,
+        "status": "success",
+        "suspicionScore": 0.5,
+        "predictedFailureType": null
+      },
+      {
+        "stepId": 7,
+        "stepType": "final_answer",
+        "input": "Generate answer",
+        "output": "The weather in Bengaluru is 28C.",
+        "toolName": null,
+        "latencyMs": 400,
+        "tokenCount": 80,
+        "retryCount": 0,
+        "status": "failed",
+        "suspicionScore": 0.8,
+        "predictedFailureType": null
+      }
+    ]
+  }
+]
