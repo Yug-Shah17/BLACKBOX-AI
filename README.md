@@ -2,6 +2,12 @@
 
 ### Inspect AI document answers. Trace failures. Test corrections.
 
+[![Quality Gate](https://github.com/Yug-Shah17/BLACKBOX-AI/actions/workflows/check.yml/badge.svg)](https://github.com/Yug-Shah17/BLACKBOX-AI/actions/workflows/check.yml)
+
+**[Open the Live Demo](https://blackbox-ai-delta.vercel.app)** | [Source Code](https://github.com/Yug-Shah17/BLACKBOX-AI)
+
+Public student demo: use fictional or non-sensitive documents only. Run history is shared, not private. The free backend may take about a minute to wake after inactivity, and newly saved runs can be lost when it sleeps, restarts or redeploys. Download important results before leaving.
+
 Black Box is a document-answering and execution-inspection prototype built by **Yug Shah**. It makes a bounded answering pipeline visible: inspect the answer, follow its source evidence, investigate failed checks, and replay a correction without overwriting the original execution.
 
 **The goal is not just to get an answer, but to understand how that answer was produced.**
@@ -277,7 +283,7 @@ Root `requirements.txt` is the canonical Python dependency list. Runtime history
 - Public Gemini usage can consume the configured account quota.
 - The frontend needs a Next.js server, and persistent history requires suitable backend storage.
 
-**Current status: locally verified demonstration; not deployed.** Do not expose it as a private document service without additional security and isolation work. Deployment requirements are documented in the [Submission Handoff](docs/SUBMISSION_HANDOFF.md).
+**Current status: deployed public demonstration on Vercel Hobby and Render Free.** The homepage, workspace, backend readiness and document catalog were checked through the public frontend on October 7, 2026. Local end-to-end verification and hosted connectivity checks are distinct: the complete hosted upload, answer and replay flow still needs verification. This is not a private document service. See the [Submission Handoff](docs/SUBMISSION_HANDOFF.md) for hosting and privacy limitations.
 
 ## Further Reading
 

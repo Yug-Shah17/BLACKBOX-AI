@@ -39,4 +39,13 @@ No additional provider retries or paid fallback were used. One successful exampl
 
 Six baseline traces, including original and corrected branches, remained byte-equivalent as parsed JSON across a scoped launcher restart. Readiness and frontend serving passed.
 
-No deployment, external hosting account or public resources were created. The owner must approve deployment. See SUBMISSION_HANDOFF.md for shared-history privacy, quota, single-worker storage and environment requirements.
+After the local checks above, the owner authorized and completed deployment on Vercel Hobby and Render Free. Public serving/connectivity checks on October 7 passed for:
+
+- https://blackbox-ai-delta.vercel.app/ (HTTP 200).
+- https://blackbox-ai-delta.vercel.app/runs (HTTP 200).
+- /api/blackbox/ready (HTTP 200, `status: ready`).
+- /api/blackbox/document-scenarios (HTTP 200, valid JSON).
+
+GitHub Actions Quality Gate completed successfully for commit `4c45df6`. Local browser verification is not the same as hosted end-to-end verification: uploaded-document answering and checkpoint replay still need a complete test on the public deployment.
+
+Render Free storage is temporary and may reset on sleep, restart or redeployment. The earlier local restart persistence result does not establish hosted persistence. See SUBMISSION_HANDOFF.md for shared-history privacy, quota, single-worker storage and environment requirements.
