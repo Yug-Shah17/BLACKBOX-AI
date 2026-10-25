@@ -94,3 +94,16 @@ test("v3 count and supplied-document operations preserve input order", () => {
     assert.deepEqual(documentReplacement(v3, 1, context), { documentIds: ["policy-old", "policy", "notice"] });
   }
 });
+
+test("v3 retrieval normalizes compatibility letters and common letter equivalences", () => {
+  const sources = [
+    { documentId: "office", title: "oﬃce", topic: "general", text: "Details", current: true },
+    { documentId: "fullwidth", title: "ＯＦＦＩＣＥ", topic: "general", text: "Details", current: true },
+    { documentId: "street", title: "Straße", topic: "general", text: "Details", current: true },
+    { documentId: "sigma", title: "ος", topic: "general", text: "Details", current: true },
+  ];
+  const v3 = { ...run, schemaVersion: "document-qa-v3" };
+  assert.deepEqual(documentReplacement(v3, 1, { question: "office", documents: sources }), { documentIds: ["office", "fullwidth"] });
+  assert.deepEqual(documentReplacement(v3, 1, { question: "STRASSE", documents: sources }), { documentIds: ["street"] });
+  assert.deepEqual(documentReplacement(v3, 1, { question: "οσ", documents: sources }), { documentIds: ["sigma"] });
+});

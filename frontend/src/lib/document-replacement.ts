@@ -6,7 +6,7 @@ function words(value: string) {
 
 const stopWords = new Set("a an and are as at be can do does for from how i in is it my of on or should the there to what when where who with".split(" "));
 function tokens(value: string): Set<string> {
-  return new Set(words(value.replaceAll("ß", "ss").replaceAll("ẞ", "ss")).map(word => word.replaceAll("ς", "σ")).filter(word => !stopWords.has(word)));
+  return new Set(words(value.normalize("NFKC").toLowerCase().replaceAll("ß", "ss").replaceAll("ς", "σ")).filter(word => !stopWords.has(word)));
 }
 function score(question: string, document: DemoDocument): number {
   const query = tokens(question);
