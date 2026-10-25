@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Request
 
 from backend.app.schemas import AgentRun, ExecuteRequest, ReplayRequest, ReplayResult, TraceStep
 from backend.app.services.workflow import WORKFLOW_VERSION, compare, execute
+from ml.trace_schema import validate_run
 
 router = APIRouter(prefix="/runs", tags=["Runs"])
 
@@ -24,6 +25,20 @@ def find_record(request, run_id):
     record = request.app.state.store.get(run_id)
     if record is None:
         raise HTTPException(404, "Run not found")
+    observed = record.get("observed")
+    if observed is not None:
+        try:
+            validate_run(observed)
+            steps = record["public"]["steps"]
+            if (observed["runId"] != run_id or observed["status"] != record["public"]["outcome"]
+                    or len(observed["steps"]) != len(steps)
+                    or any(step["checkpointId"] != public["checkpointId"]
+                           or step["input"] != public["inputData"]
+                           or step["output"] != public["outputData"]
+                           for step, public in zip(observed["steps"], steps))):
+                raise ValueError("Observed and public traces disagree")
+        except (ValueError, KeyError, TypeError) as error:
+            raise HTTPException(409, "Stored arithmetic trace is incomplete or incompatible") from error
     return record
 
 

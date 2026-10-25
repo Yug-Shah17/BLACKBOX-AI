@@ -96,6 +96,8 @@ class RunStore:
             identifier = record["public"]["runId"]
             if identifier in state["runs"]:
                 raise StorageError("Run identifier already exists")
+            if state["checkpoints"].keys() & checkpoints.keys():
+                raise StorageError("Checkpoint identifier already exists")
             state["runs"][identifier] = copy.deepcopy(record)
             state["checkpoints"].update(copy.deepcopy(checkpoints))
             self._write(state)
