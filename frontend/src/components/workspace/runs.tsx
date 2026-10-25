@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Check, ChevronLeft, ChevronRight, CircleAlert, Clock3, FileUp, GitBranch, Layers3, Plus, RefreshCw, Search, SlidersHorizontal } from "lucide-react";
-import { allRuns, api, duration, isDocumentRun, RecordedRun, runTitle, shortId } from "@/lib/api";
+import { allRuns, api, duration, isDocumentRun, RecordedRun, runTitle, shortId, startGuidedDemo } from "@/lib/api";
 import { NewRunDialog } from "./new-run-dialog";
 import { DownloadButton, ErrorNotice, Loading, Status } from "./primitives";
 
@@ -15,6 +15,7 @@ export default function RunsWorkspace() {
   const [workflowFilter, setWorkflowFilter] = useState("all");
   const [sort, setSort] = useState("newest"); const [page, setPage] = useState(1);
   const [creating, setCreating] = useState(false); const [createError, setCreateError] = useState("");
+  const [guidedError, setGuidedError] = useState("");
   const [workflow, setWorkflow] = useState("documents");
   const [sourceMode, setSourceMode] = useState("demo");
   const dialog = useRef<HTMLDialogElement>(null);
@@ -45,6 +46,15 @@ export default function RunsWorkspace() {
   });
   const pages = Math.max(1, Math.ceil(filtered.length / 8)); const currentPage = Math.min(page, pages);
   const latestFailure = [...scopedRuns].filter(r => r.outcome === "failed" && r.source !== "legacy-fixture").sort((a, b) => b.timestamp.localeCompare(a.timestamp))[0];
+  async function guidedDemo() {
+    if (creationPending.current) return;
+    creationPending.current = true; setCreating(true); setGuidedError("");
+    try {
+      const run = await startGuidedDemo();
+      router.push(`/trace/${run.runId}`);
+    } catch (error) { setGuidedError(error instanceof Error ? error.message : "Could not start the demo. Try again."); }
+    finally { creationPending.current = false; setCreating(false); }
+  }
   function resetFilters() { setSearch(""); setFilter("all"); setWorkflowFilter("all"); setPage(1); }
   async function createRun(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -61,8 +71,10 @@ export default function RunsWorkspace() {
     catch (e) { setCreateError(e instanceof Error ? e.message : "Execution failed"); } finally { creationPending.current = false; setCreating(false); }
   }
   return <div className="page runs-page">
-    <div className="page-heading"><div><div className="eyebrow">OBSERVABILITY</div><h1>Execution runs</h1><p className="page-subtitle">Personal workspace <span className="subtle-dot" /> Local agent history</p></div><div className="heading-actions"><button className="icon-button" title="Refresh runs" aria-label="Refresh runs" onClick={refresh} disabled={loading}><RefreshCw size={16} className={loading ? "spin" : ""} /></button><button className="button primary" onClick={() => { setCreateError(""); dialog.current?.showModal(); }}><Plus size={16} />New run</button></div></div>
-    <section className="run-start" aria-label="Start a document execution"><div><h2>Ask a document. Inspect the answer.</h2><p>Bring a TXT, MD, PDF or DOCX, or explore a fictional example.</p></div><div className="heading-actions"><button className="button primary" onClick={() => { setWorkflow("documents"); setSourceMode("upload"); setCreateError(""); dialog.current?.showModal(); }}><FileUp size={17} />Upload document</button><button className="button" onClick={() => { setWorkflow("documents"); setSourceMode("demo"); setCreateError(""); dialog.current?.showModal(); }}><ArrowRight size={17} />Try example</button></div></section>
+    <div className="page-heading"><div><div className="eyebrow">OBSERVABILITY</div><h1>Execution runs</h1><p className="page-subtitle">Demo workspace <span className="subtle-dot" /> Recorded agent history</p></div><div className="heading-actions"><button className="icon-button" title="Refresh runs" aria-label="Refresh runs" onClick={refresh} disabled={loading}><RefreshCw size={16} className={loading ? "spin" : ""} /></button><button className="button primary" onClick={() => { setCreateError(""); dialog.current?.showModal(); }}><Plus size={16} />New run</button></div></div>
+    <section className="run-start" aria-label="Start a document execution"><div><h2>Follow a failure from answer to evidence.</h2><p>Start a local fictional failure, inspect the diagnosis, replay a correction, then compare both runs. No external AI call.</p></div><div className="heading-actions"><button className="button primary" onClick={() => { setWorkflow("documents"); setSourceMode("upload"); setCreateError(""); dialog.current?.showModal(); }}><FileUp size={17} />Upload document</button><button className="button" disabled={creating} onClick={guidedDemo}><ArrowRight size={17} />{creating ? "Starting demo…" : "Start guided failure"}</button></div></section>
+    {guidedError && <ErrorNotice message={guidedError} retry={guidedDemo} />}
+    <p className="quiet-label">Student portfolio demo. Hosted run history may be shared and temporary; download records you want to keep. Use fictional or non-sensitive documents.</p>
     <div className="stats-band">
       {[{ name: "Recorded runs", value: runs.length.toString().padStart(2, "0"), icon: Layers3, note: "All recorded executions" }, { name: "Successful", value: successful.toString().padStart(2, "0"), icon: Check, note: runs.length ? `${Math.round(successful / runs.length * 100)}% of recorded runs` : "No executions yet", color: "green" }, { name: "Failed", value: failed.toString().padStart(2, "0"), icon: ArrowDownRight, note: "Available for investigation", color: "red" }, { name: "Replay branches", value: replays.toString().padStart(2, "0"), icon: GitBranch, note: "Alternative executions", color: "blue" }].map(stat => <div className="stat" key={stat.name}><span className="stat-label">{stat.name}<stat.icon size={15} /></span><strong className={stat.color || ""}>{stat.value}</strong><small>{stat.note}</small></div>)}
     </div>
