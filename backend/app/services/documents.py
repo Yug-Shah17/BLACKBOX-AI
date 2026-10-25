@@ -13,9 +13,11 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from backend.app.services import gemini
 
 LEGACY_VERSION = "document-qa-v1"
-VERSION = "document-qa-v2"
+PREVIOUS_VERSION = "document-qa-v2"
+VERSION = "document-qa-v3"
 GEMINI_VERSION = "document-qa-gemini-v1"
 KINDS = ("retrieval", "selection", "generation", "validation")
+STOP_WORDS = frozenset("a an and are as at be can do does for from how i in is it my of on or should the there to what when where who with".split())
 
 
 class Document(BaseModel):
@@ -82,8 +84,29 @@ def relevant(question, document, version: str = VERSION):
         return True
     if version != LEGACY_VERSION and word_count_target(question) is not None:
         return True
+    if version == VERSION:
+        return retrieval_score(question, document) > 0
     words = set(re.findall(r"\w+", question.casefold()))
     return bool(words & set(re.findall(r"\w+", document["topic"].casefold())))
+
+
+def retrieval_tokens(text: str) -> set[str]:
+    return set(re.findall(r"\w+", text.casefold())) - STOP_WORDS
+
+
+def retrieval_score(question: str, document: dict) -> int:
+    """Lexical evidence only: metadata weighs twice as much as source text."""
+    words = retrieval_tokens(question)
+    metadata = retrieval_tokens(document["title"] + " " + document["topic"])
+    return 2 * len(words & metadata) + len(words & retrieval_tokens(document["text"]))
+
+
+def retrieve(question: str, sources: list[dict], version: str = VERSION) -> list[str]:
+    candidates = [item for item in sources if relevant(question, item, version)]
+    if version == VERSION and word_count_target(question) is None:
+        # Stable ties preserve supplied order; archived sources stay visible for diagnosis/replay.
+        candidates.sort(key=lambda item: retrieval_score(question, item), reverse=True)
+    return [item["documentId"] for item in candidates]
 
 
 def answer_checks(question: str, selected: dict | None, generated: dict,
@@ -160,8 +183,8 @@ def execute(config, checkpoint=None, prefix=None, override=None, version: str = 
                 inputs["operation"] = "word_count"
             elif version == GEMINI_VERSION:
                 inputs["operation"] = "provided_documents"
-            output = {"documentIds": [] if fault == "missing_retrieval" else [
-                key for key, item in documents.items() if relevant(config["question"], item, version)]}
+            output = {"documentIds": [] if fault == "missing_retrieval" else
+                      retrieve(config["question"], list(documents.values()), version)}
         elif index == 1:
             candidates = [documents[key] for key in state["documentIds"]]
             inputs = {"documents": candidates}
@@ -239,7 +262,7 @@ def diagnose(record):
             elif not selected["current"]:
                 suspect, evidence = 2, [f"Selected source '{selected['documentId']}' is marked archived in the recorded input."]
             elif not relevant(question, selected, version):
-                suspect, evidence = 2, [f"Selected source '{selected['documentId']}' has topic '{selected['topic']}', which does not match the recorded question keywords."]
+                suspect, evidence = 2, [f"Selected source '{selected['documentId']}' has no lexical relevance under recorded workflow '{version}'."]
             else:
                 suspect = 3
                 if not answer_checks(question, selected, generated, steps[2]["inputData"], version):
