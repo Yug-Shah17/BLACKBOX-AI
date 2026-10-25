@@ -22,6 +22,7 @@ export interface DocumentMetrics {
     correctedOutcome: string; wrongCorrectionOutcome: string; originalPreserved: boolean }[];
 }
 export interface RecordedRun {
+  schemaVersion?: string;
   runId: string; task: string; agentName: string; outcome: string; timestamp: string;
   durationMs: number; steps: RecordedStep[]; source: string; parentRunId?: string | null;
   replayCheckpointStep?: number | null;
