@@ -4,6 +4,7 @@ import copy
 import json
 import re
 import time
+import unicodedata
 from datetime import datetime, timezone
 from typing import Literal
 from uuid import uuid4
@@ -91,7 +92,8 @@ def relevant(question, document, version: str = VERSION):
 
 
 def retrieval_tokens(text: str) -> set[str]:
-    return set(re.findall(r"\w+", text.casefold())) - STOP_WORDS
+    normalized = unicodedata.normalize("NFKC", text).lower().replace("ß", "ss").replace("ς", "σ")
+    return set(re.findall(r"\w+", normalized)) - STOP_WORDS
 
 
 def retrieval_score(question: str, document: dict) -> int:

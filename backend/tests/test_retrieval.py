@@ -46,6 +46,11 @@ class RetrievalTests(unittest.TestCase):
         for question in ("The and is of?", "Quantum entanglement?"):
             self.assertEqual(documents.retrieve(question, sources), [])
 
+    def test_compatibility_characters_use_shared_normalization(self):
+        source = {"documentId": "office", "title": "oﬃce", "topic": "services", "text": "Campus."}
+        self.assertEqual(documents.retrieve("OFFICE", [source]), ["office"])
+        self.assertEqual(documents.retrieval_tokens("ＯＦＦＩＣＥ Straße ς"), {"office", "strasse", "σ"})
+
     def test_archived_evidence_remains_available_but_is_not_selected(self):
         config = documents.DocumentRequest(documents=list(reversed(documents.default_documents()))).model_dump()
         record, _ = documents.execute(config)
