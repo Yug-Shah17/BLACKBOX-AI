@@ -1,0 +1,39 @@
+{
+  "description": "Synthetic lexical retrieval development/challenge suite; labels authored before ranking changes. Ambiguous queries accept multiple sources. No generated answers are evaluated.",
+  "documents": [
+    {"documentId":"privacy","title":"Privacy policy","topic":"privacy policy","text":"Personal data is deleted after account closure. Contact the privacy officer.","current":true},
+    {"documentId":"returns-old","title":"Archived returns policy","topic":"returns policy","text":"Returns were accepted within seven days.","current":false},
+    {"documentId":"shipping","title":"Shipping guide","topic":"delivery shipping","text":"Standard delivery takes five business days. Express shipping takes two days.","current":true},
+    {"documentId":"returns","title":"Current returns policy","topic":"returns policy","text":"Returns are accepted within thirty days with a receipt.","current":true},
+    {"documentId":"scholarship","title":"Merit scholarship","topic":"financial support","text":"Scholarship applications close on 15 December. Submit a transcript.","current":true},
+    {"documentId":"library","title":"Library loans","topic":"campus services","text":"Students may borrow six books. Library renewals are available online.","current":true},
+    {"documentId":"password","title":"Password reset","topic":"account access","text":"Use the reset link to change a forgotten password. Links expire after one hour.","current":true},
+    {"documentId":"parking","title":"Parking permits","topic":"campus transport","text":"Parking permits cost twenty credits each term. Bicycles park free.","current":true},
+    {"documentId":"exam","title":"Examination rules","topic":"assessment","text":"Bring a student identity card to the examination. Calculators are allowed only where stated.","current":true},
+    {"documentId":"lab","title":"Laboratory safety","topic":"laboratory safety","text":"Wear goggles in the laboratory. Report chemical spills to the supervisor.","current":true},
+    {"documentId":"leave","title":"Medical leave","topic":"attendance leave","text":"Medical leave requires a certificate. Submit it within three days.","current":true},
+    {"documentId":"fees","title":"Tuition payment","topic":"finance payments","text":"Tuition payment deadlines are published each term. Installments require approval.","current":true}
+  ],
+  "queries": [
+    {"id":"d01","split":"development","question":"What is the returns policy?","relevant":["returns"]},
+    {"id":"d02","split":"development","question":"How long does standard delivery take?","relevant":["shipping"]},
+    {"id":"d03","split":"development","question":"When do scholarship applications close?","relevant":["scholarship"]},
+    {"id":"d04","split":"development","question":"How can I reset a forgotten password?","relevant":["password"]},
+    {"id":"d05","split":"development","question":"What do parking permits cost?","relevant":["parking"]},
+    {"id":"d06","split":"development","question":"Where can I find the policy?","relevant":["privacy","returns"],"kind":"ambiguous"},
+    {"id":"d07","split":"development","question":"What is the cafeteria menu?","relevant":[],"kind":"negative"},
+    {"id":"d08","split":"development","question":"The and is of?","relevant":[],"kind":"negative"},
+    {"id":"c01","split":"challenge","question":"How many books may students borrow?","relevant":["library"]},
+    {"id":"c02","split":"challenge","question":"What should I bring to the examination?","relevant":["exam"]},
+    {"id":"c03","split":"challenge","question":"What happens to personal data after account closure?","relevant":["privacy"]},
+    {"id":"c04","split":"challenge","question":"Are calculators allowed?","relevant":["exam"]},
+    {"id":"c05","split":"challenge","question":"Who handles chemical spills?","relevant":["lab"]},
+    {"id":"c06","split":"challenge","question":"Does medical leave need a certificate?","relevant":["leave"]},
+    {"id":"c07","split":"challenge","question":"Do installments require approval?","relevant":["fees"]},
+    {"id":"c08","split":"challenge","question":"When are the payment deadlines?","relevant":["fees"]},
+    {"id":"c09","split":"challenge","question":"What are the campus services?","relevant":["library","parking"],"kind":"ambiguous"},
+    {"id":"c10","split":"challenge","question":"Is there a swimming pool?","relevant":[],"kind":"negative"},
+    {"id":"c11","split":"challenge","question":"How can I recover my login credentials?","relevant":["password"],"kind":"paraphrase"},
+    {"id":"c12","split":"challenge","question":"Can I return damaged purchases?","relevant":["returns"],"kind":"missing-detail"}
+  ]
+}

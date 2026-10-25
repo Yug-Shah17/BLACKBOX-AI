@@ -86,6 +86,10 @@ def relevant(question, document, version: str = VERSION):
     return bool(words & set(re.findall(r"\w+", document["topic"].casefold())))
 
 
+def retrieve(question: str, sources: list[dict], version: str = VERSION) -> list[str]:
+    return [item["documentId"] for item in sources if relevant(question, item, version)]
+
+
 def answer_checks(question: str, selected: dict | None, generated: dict,
                   generation_input: dict, version: str) -> bool:
     if not selected or not selected["current"] or generated["citation"] != selected["documentId"]:
