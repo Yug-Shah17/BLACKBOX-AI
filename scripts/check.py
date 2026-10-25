@@ -13,7 +13,7 @@ def main():
     commands = [
         ["-m", "pip", "check"],
         ["-B", "-m", "unittest", "ml.test_pipeline", "ml.test_evaluation",
-         "backend.tests.test_api", "backend.tests.test_robustness", "backend.tests.test_documents", "backend.tests.test_gemini_documents", "backend.tests.test_document_import", "backend.tests.test_student_demo"],
+         "backend.tests.test_api", "backend.tests.test_robustness", "backend.tests.test_documents", "backend.tests.test_gemini_documents", "backend.tests.test_document_import", "backend.tests.test_student_demo", "backend.tests.test_retrieval"],
         ["-B", "-m", "ml.evaluate_model"],
         ["-B", "scripts/replay_benchmark.py"],
         ["-B", "scripts/document_benchmark.py"],

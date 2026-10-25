@@ -18,7 +18,7 @@ def find(request, run_id):
     try:
         run = record["public"]
         steps = run["steps"]
-        if (run.get("schemaVersion") not in (documents.VERSION, documents.LEGACY_VERSION, documents.GEMINI_VERSION)
+        if (run.get("schemaVersion") not in (documents.VERSION, documents.PREVIOUS_VERSION, documents.LEGACY_VERSION, documents.GEMINI_VERSION)
                 or run.get("source") != "controlled-local-document-workflow"
                 or len(steps) != len(documents.KINDS)):
             raise ValueError("Unsupported document trace")
