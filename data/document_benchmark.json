@@ -1,7 +1,7 @@
 {
   "dataSource": "fictional-demo",
   "diagnosisMode": "rules",
-  "workflowVersion": "document-qa-v2",
+  "workflowVersion": "document-qa-v3",
   "scenarioSha256": "263da8d6c4db4bd78146e9f3343bea8d16c5759a60aae9cce382e83908035c20",
   "caseCount": 12,
   "healthyCaseCount": 3,
