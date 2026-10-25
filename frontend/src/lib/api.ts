@@ -80,6 +80,15 @@ export async function api<T>(path: string, body?: unknown, signal?: AbortSignal)
   }
   return response.json();
 }
+export async function startGuidedDemo(): Promise<RecordedRun> {
+  const scenarios = await api<DocumentScenario[]>("/document-scenarios");
+  const scenario = scenarios.find(item => item.id === "registration") ?? scenarios[0];
+  if (!scenario?.documents.length || !scenario.question.trim()) throw new Error("The fictional demo documents are unavailable. Try again or create a custom run.");
+  return api<RecordedRun>("/document-runs", {
+    question: scenario.question, documents: scenario.documents,
+    failureType: "unsupported_answer", answeringMode: "local", allowExternalProcessing: false,
+  });
+}
 export function isDocumentRun(id: string) { return id.startsWith("doc_"); }
 export function runBase(id: string) { return isDocumentRun(id) ? "/document-runs" : "/runs"; }
 export function runTitle(run: RecordedRun) {

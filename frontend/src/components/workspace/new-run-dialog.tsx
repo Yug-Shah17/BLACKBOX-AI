@@ -22,7 +22,7 @@ export function NewRunDialog({ dialog, workflow, setWorkflow, sourceMode, setSou
   const [uploadError, setUploadError] = useState("");
   const [reading, setReading] = useState(false);
   const [dragging, setDragging] = useState(false);
-  const [answeringMode, setAnsweringMode] = useState("gemini");
+  const [answeringMode, setAnsweringMode] = useState("local");
   const [externalConsent, setExternalConsent] = useState(false);
   const uploadAttempt = useRef(0);
   const uploadRequest = useRef<AbortController | null>(null);
