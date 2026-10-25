@@ -1,0 +1,39 @@
+# BLACKBOX-AI coordinator progress
+Updated 26 October 2026 00:28 IST. Deadline 28 October 20:00 IST. Stop unattended edits at 26 October 08:00 IST and arrange later availability.
+
+## Repository safety
+Original ZIP folder BLACKBOX-AI-main untouched, no Git metadata. Fresh clone repository from Yug-Shah17/BLACKBOX-AI at 0cebba7; source comparison found no differences (only clone .git). Main must never be merged/deployed. Integration branch portfolio/integration. Worktrees under worktrees/frontend, backend, retrieval with portfolio/frontend, portfolio/backend, portfolio/retrieval.
+
+## Bounded plan and acceptance
+1. Baseline existing backend quality gate, frontend tests/lint/types/build; inspect hosted homepage/workspace without paid calls. Record unavailable checks honestly.
+2. Frontend specialist owns frontend/** only: preserve visual direction; make existing fictional failure -> evidence diagnosis -> correction -> comparison flow guided, clear pending/error states and shared ephemeral public-demo labels. No redesign/dependencies. Acceptance: usable local deterministic demo, errors recoverable, original/replay distinguishable, test/build.
+3. Backend specialist owns backend/** except backend/app/services/documents.py (retrieval ownership): inspect execute/replay validation, corruption/error handling and immutable originals; add focused regression checks and surgical fixes. Acceptance: invalid replacement rejects usefully, original record unchanged after correct/incorrect replay, existing suites pass.
+4. Retrieval specialist owns backend/app/services/documents.py, new retrieval evaluation script/fixture/tests and docs/RETRIEVAL_EVALUATION.md: varied deterministic corpus and queries, measured unchanged baseline, improve lexical retrieval with existing dependencies, paired before/after output with failures. Avoid leakage/tuned claims; no generation/API calls. Acceptance: reproducible command, ranking metrics with denominators, negative/ambiguous cases and limitations, old workflow regression tests pass.
+5. Coordinator integrates committed branches sequentially into portfolio/integration, verifies combined behavior, captures screenshots, writes demonstration and beginner explanation plus honest LinkedIn copy; push integration and open draft PR if authentication permits. No main merge or production deploy.
+
+## API contract freeze
+Preserve routes and existing JSON fields in backend/app/schemas.py and frontend/src/lib/api.ts. No breaking schema changes without coordinator agreement. Document pipeline remains retrieval(1), selection(2), generation(3), validation(4). Replay accepts checkpointStep + optional checkpointId + alternativeAction {type: replace_output, output: object}; creates new run with parentRunId and preserved original. Public run fields and comparison remain unchanged. Retrieval ranking may change for fresh runs; recorded prefixes must remain compatible. Local-only demo; no Gemini invocation. Prefer additive UI guidance using existing contracts.
+
+## Runtime / blockers
+System node and npm exist; python and gh not found on PATH. Bundled Python available C:/Users/staff/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe; must inspect installed packages. No dependency installation authorized. Codebase graph blackbox-portfolio indexed fast; coverage gaps require direct reads. codebase-memory SKILL.md path access denied: do not claim loaded. Ponytail entry and core read.
+Usage verified 54% five-hour, 12% weekly; reset 26 October 03:14:57 IST. No reset credits used.
+Two heartbeats ACTIVE per creation responses: blackbox-ai-coordinator-continuation 03:20 IST, blackbox-ai-8-am-checkpoint 08:00 IST. Read back before concluding schedule setup. Existing unrelated black-box-submission-polish remains PAUSED.
+Live web fetch failed; browser inspection pending. Baseline tests pending.
+
+## Exact next action
+Launch bounded specialists in assigned worktrees; inspect bundled runtime packages and run baseline checks; inspect live site through browser; verify saved heartbeats. Update this file before stopping and after milestones, including commits/tests and live agent status.
+
+## Setup checkpoint 26 October 00:34 IST
+Plan committed 3892038. Three live agents: frontend, backend, retrieval; each assigned isolated worktree and branch. No overlapping files except coordinated backend route version allowlist. Frontend baseline npm test 26/26 passed with Node26.3.1. Existing lockfile install authorized as setup (no dependency additions); frontend preparing npm ci. Backend locating installed Python3.14 and owns shared runtime setup; bundled3.12 lacks fastapi/httpx/sklearn. Python3.14 paths found under AppData/Local/Python/pythoncore-3.14-64 and AppData/Local/Programs/Python/Python314. codebase-memory SKILL now read successfully via approved elevated read.
+Schedules read back from saved TOML: blackbox-ai-coordinator-continuation ACTIVE03:20 and blackbox-ai-8-am-checkpoint ACTIVE08:00, both target this coordinator thread01a17468-49a8-70d2-a2f4-04a66cc796c3. Prior older unrelated automation stays PAUSED. No action needed from user.
+Hosted homepage browser renders; fictional animation labeled. Hosted /runs cold-start connecting; misleading Personal workspace / Local agent history labels sent to frontend specialist. Hosted full flow not yet validated.
+Potential backend bug under investigation: checkpoint ID collision may overwrite stored originals. Retrieval baseline topic overlap/input order; specialist proposed minimal v3 preserving v1/v2 recorded validation/diagnosis semantics (approved only because relevant() reused in validation). No metrics claimed yet.
+Next: await runtime setup, run unchanged backend baseline, inspect hosted readiness and local combined UI once specialists commit; regularly save progress.
+
+## Usage safety checkpoint 26 October ~00:41 IST
+Usage now90% five-hour,18% weekly; reset03:14:57 IST. All three agents instructed finish bounded checks, COMMIT and STOP sampling promptly; no extra work. Do not restart them if complete; inspect statuses and commits on03:20 wake.
+Shared environment ready .venv/Scripts/python.exe Python3.14; exact existing root requirements installed, no manifests/new dependencies. Frontend npm ci installed existing lockfile in its worktree; reports5 audit vulnerabilities (4high,1critical), no updates attempted. Baseline frontend26/26, edited frontend28/28; lint/types/build pending at this checkpoint.
+Hosted HTTPS normal validation succeeded elevated: /health200 and direct backend/health200; /ready200 ready; /document-runs200 empty; /runs200 fixture data. Browser /runs connecting observed despite API responding; full hosted flow NOT verified. No Gemini calls or created hosted runs.
+Retrieval agent preliminary results (verify committed artifact before publishing): fixed12-source20-query developer-authored fixture17positive3negative, baseline top1=4/17 and MRR .2647; new v3 top1=15/17 MRR .8824; negative abstention3/3 both. Challenge9/11 vs2/11; not independently held-out, synonym/missing detail limitations retained. Baseline-only commit482c88a exists on portfolio/retrieval; final commit pending.
+Backend investigating checkpoint-ID collision overwrite and malformed arithmetic record replay failures; focused checks pending. Frontend direct local guided injected-failure button plus guide/public labels implemented; commit pending.
+Exact next action at wake: read agents/statuses and git log/status for all4worktrees; collect commits/check results, integrate backend then retrieval then frontend into portfolio/integration; resolve only coordinated changes. Run combined scripts/check.py (generate model first if missing), frontend checks; local browser screenshot/demo. Then docs/LinkedIn/explanation and draft integration PR. Do not merge main or deploy. Stop unattended at08:00 checkpoint and arrange later availability.
