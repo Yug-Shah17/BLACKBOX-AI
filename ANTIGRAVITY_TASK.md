@@ -1,23 +1,46 @@
-# Antigravity manual QA handoff
+# Antigravity implementation and QA handoff
 
-Status: PREPARED ONLY. No Antigravity worker has been started. Start this task only when Yug or the Codex coordinator explicitly hands it over, normally after Codex usage reaches 95%. Do not repeat a case if the latest coordinator checkpoint says it is already complete.
+Status: PREPARED ONLY. No Antigravity agent has been started. Yug explicitly authorized bounded implementation as well as QA. Start when Yug opens this folder and submits this task; no need to wait for a Codex reset. Do not repeat completed coordinator work.
 
-Repository: Yug-Shah17/BLACKBOX-AI. Your branch: portfolio/antigravity-manual. This folder is an isolated Git worktree; Codex edits a different checkout. Base integration commit is 242d836. Do not edit application code, dependency files, other branches, or main. Do not deploy, call Gemini, add services, delete records or change accounts/credentials for this task.
+## Workspace and boundaries
 
-## Exact manual task
+Open THIS folder only: C:/Users/staff/Desktop/BLACKBOX-AI/worktrees/antigravity-manual
+Branch: portfolio/antigravity-manual. Base integration: 242d836. This is a Git worktree, not a security sandbox. Stay inside this folder. Preserve existing changes and inspect Git status first. Read applicable AGENTS.md and project instructions. No other worker owns these assigned files.
 
-Use a fresh regular Chrome browser window against the running LOCAL preview http://127.0.0.1:3001/runs. If unavailable, record that and stop; do not restart services yourself. No project dependency installation is needed for these browser steps. This task checks a fresh-browser, keyboard-only journey and separate standalone uploads; prior checks used an in-app browser and a four-format batch with source replays.
+Do not merge, deploy, push, delete records/files, change credentials/accounts, read secrets, call Gemini or other paid APIs, add dependencies, update lockfiles, or modify backend/retrieval/API schemas/frozen evaluation fixtures. Use fictional documents only. Preserve the visual direction and existing functionality. Do not change recorded results or classify answer correctness from invented heuristics. If a necessary fix exceeds ownership, report it rather than expanding scope.
 
-1. With keyboard navigation only, reach Upload document and open it. Use only the fictional fixtures under this worktree\qa-fixtures. Select local extracts and word counts; never select Gemini or external processing.
-2. Upload policy.txt ALONE. Ask: How many times does "integrity" appear? Execute once. Expected: Successful, count 3, cited source policy.txt. Record outcome and screenshot. Do not double-submit if slow; check history before retry.
-3. Repeat as separate original runs for policy.md ALONE, policy.pdf ALONE, and policy.docx ALONE. Expected count 3 and the corresponding citation in each.
-4. Verify keyboard access to the run's source details, checkpoint tab and download JSON control. Use Escape to close a newly opened upload dialog; focus should return to the opener. Record any unreachable control without fixing it.
-5. Through settings, use Light and Dark and reload once in each. At a 390px Chrome device viewport, capture the upload dialog and a trace; note clipped text, page overflow or inaccessible controls. Restore normal viewport afterward.
+## Task 1: truthful recorded-output labels
 
-## Allowed outputs only
+Ownership: frontend/src/components/workspace/document-evidence.tsx and frontend/src/components/workspace/trace.tsx, plus narrowly relevant tests under frontend/tests.
 
-Write docs/ANTIGRAVITY_MANUAL_RESULTS.md with browser/version, date/time, each exact step, observed vs expected result, run IDs, any errors and screenshots. Save screenshots only under docs/screenshots/antigravity/. Distinguish skipped/blocked/failed from passed. Do not diagnose architecture, redesign, improve retrieval, modify tests or fix code. If something fails, copy the observed error, capture it, and continue independent remaining cases.
+Inspect recorded generation metadata and existing local contracts before editing. Make source extracts, word counts, and provider-generated answers distinguishable using explicit recorded metadata. Explain near local source extracts that matching source text does not establish whether the user's question was answered. Keep run outcome/status intact: a passed execution is not a new accuracy score. Retain correct copy/download controls, citation inspection, and legacy-record fallbacks. If metadata cannot reliably distinguish a case, use neutral wording and document the ambiguity. No API/schema changes or new ML logic.
 
-Commit ONLY that report and screenshots on portfolio/antigravity-manual; do not merge or push unless Yug explicitly asks. Return the commit ID and remaining failures to Yug/Codex. Codex reviews before integrating.
+Acceptance: a literal source extract is clearly labeled as such; count output is accurately described when metadata supports it; provider output is not mislabeled as a local extract; missing/legacy metadata does not crash or produce a false claim. Add meaningful regression checks appropriate to the existing test setup. Commit this task separately.
 
-If Git reports different directory ownership, use a command-scoped trust exception for this exact worktree only: git -c safe.directory=C:/Users/staff/Desktop/BLACKBOX-AI/worktrees/antigravity-manual status --short. Use the same flag for your report-only add/commit commands; do not add a wildcard global trust setting.
+## Task 2: fresh-browser QA and demonstrated small fixes
+
+Ownership: frontend/src/components/workspace/new-run-dialog.tsx and narrowly scoped rules in frontend/src/app/globals.css, only for issues reproduced in this task. Existing task-1 files may receive directly related accessibility fixes. No redesign or broad formatting/refactoring.
+
+Use fresh regular Chrome. A previous pass used an in-app browser with a four-format batch and source-selection replays; this task specifically checks FOUR separate original uploads and keyboard-only operation.
+
+1. Using keyboard navigation, open Upload document. Use qa-fixtures/policy.txt ALONE, local word counts only, question: How many times does "integrity" appear? Execute once. Expect Successful, count 3 and the matching source. Record run ID and screenshot. If slow, inspect history before retrying; never double-submit blindly.
+2. Repeat separately with policy.md, policy.pdf and policy.docx. All expect count 3. Never select Gemini/external processing.
+3. Check keyboard access to source details, checkpoint tab, copy/download controls, and dialog. Escape should close the upload dialog and restore opener focus. Record exact failures.
+4. Check Light and Dark with reload, then a 390px viewport for upload dialog and trace. Check clipping, page overflow and unreachable controls. Restore normal viewport.
+5. Fix only reproduced focus, keyboard or responsive issues in owned files. Capture before/after and recheck the affected flow. If none exists, report that; do not invent changes.
+
+## Runtime and validation
+
+The existing local preview may be at http://127.0.0.1:3001/runs and backend at http://127.0.0.1:8000. Check availability; do not assume they are running. Never stop/restart those shared services. That preview does not show your edits.
+
+For your own changed frontend, use this worktree's frontend directory. If needed install ONLY the exact existing lockfile with npm ci --cache C:/Users/staff/Desktop/BLACKBOX-AI/.npm-cache; do not install new packages or update versions. Set BACKEND_URL=http://127.0.0.1:8000 for your process and use a separate frontend port 3002 (npm run dev -- --port 3002). If backend is unavailable, finish independent code/tests and record browser checks as blocked; do not reconfigure storage or launch another backend. Keep track of your own process and stop only that process afterward.
+
+Run npm test, npm run lint, npx --no-install tsc --noEmit, and npm run build from frontend. Record actual results, including failures; never claim a skipped check passed. No production deployment. Follow project documentation lookup rules for APIs you need to consult.
+
+## Deliverables
+
+Write docs/ANTIGRAVITY_RESULTS.md: commits, changed files and reasons, tests with actual output summary, Chrome version/time, observed versus expected results, run IDs, screenshots, remaining failures and exact next action. Screenshots go under docs/screenshots/antigravity/. Distinguish passed, failed, blocked and skipped checks. Keep metrics unchanged and disclose the known retrieval limitation: the frozen review's improved retriever abstained on 0/4 unsupported questions; this handoff does not fix retrieval.
+
+Commit task 1 and any task-2 fixes separately, then commit the report/screenshots. Return commit IDs and a concise summary for Codex review. Do not integrate into portfolio/integration or main. Codex will inspect, test and decide what to cherry-pick; being on a branch does not guarantee correctness.
+
+If Git reports differing ownership, use this exact command-scoped exception for each Git command: git -c safe.directory=C:/Users/staff/Desktop/BLACKBOX-AI/worktrees/antigravity-manual status --short. Apply the same flag to add/commit, never wildcard global trust. Stage exact owned paths, never all files blindly.
