@@ -1,0 +1,774 @@
+{
+  "dataSource": "agent-authored-synthetic",
+  "description": "Fictional current community, workplace, and campus documents with disjoint split topics. Agent-authored synthetic evaluation data; not an independent human benchmark.",
+  "splits": {
+    "calibration": {
+      "documents": [
+        {
+          "documentId": "cal-d1",
+          "title": "Juniper tool cupboard",
+          "topic": "tool borrowing",
+          "text": "Residents borrow hand tools Tuesdays 17:00–19:00 from the blue cupboard. Return tools within three days. Power tools are not stocked.",
+          "current": true
+        },
+        {
+          "documentId": "cal-d2",
+          "title": "Lark bicycle shelter",
+          "topic": "bicycle storage",
+          "text": "The shelter opens daily 06:00–22:00. Entry uses a campus card. Bikes left over fourteen days receive a removal notice. Charging sockets are absent.",
+          "current": true
+        },
+        {
+          "documentId": "cal-d3",
+          "title": "Amber rehearsal rooms",
+          "topic": "rehearsal booking",
+          "text": "Members reserve ninety-minute sessions and may hold two future bookings. Cancel at the desk at least twelve hours ahead. Food is prohibited.",
+          "current": true
+        },
+        {
+          "documentId": "cal-d4",
+          "title": "Willow seed exchange",
+          "topic": "seed exchange",
+          "text": "The exchange meets the first Saturday monthly. Label envelopes with plant name and harvest year. You may take seeds without contributing. Flowers and vegetables are accepted; tree seeds are excluded.",
+          "current": true
+        },
+        {
+          "documentId": "cal-d5",
+          "title": "Orchid print corner",
+          "topic": "office printing",
+          "text": "Teams get forty free pages weekly. Submit PDFs for black-and-white printing. Collect jobs from the green tray. Uncollected pages are recycled Fridays.",
+          "current": true
+        },
+        {
+          "documentId": "cal-d6",
+          "title": "Harbor meeting nook",
+          "topic": "meeting space",
+          "text": "Reserve the six-seat nook on the reception calendar for up to one hour. Walk-ins are allowed when unreserved. Leave its door open afterward.",
+          "current": true
+        },
+        {
+          "documentId": "cal-d7",
+          "title": "Pine parcel bench",
+          "topic": "parcel collection",
+          "text": "The staffed lobby bench operates weekdays 16:00–18:00. Show a delivery code. Parcels are returned to sender after five weekdays.",
+          "current": true
+        },
+        {
+          "documentId": "cal-d8",
+          "title": "Clover listening booth",
+          "topic": "audio listening",
+          "text": "Reserve the two-seat booth at the library desk for up to one hour. Headphones are supplied. Leave its door open afterward. Food stays outside.",
+          "current": true
+        }
+      ],
+      "queries": [
+        {
+          "id": "cal-p1",
+          "question": "When can I borrow a hammer?",
+          "expectedDocumentIds": [
+            "cal-d1"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p2",
+          "question": "How soon must borrowed hand tools come back?",
+          "expectedDocumentIds": [
+            "cal-d1"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p3",
+          "question": "Can I borrow an electric drill?",
+          "expectedDocumentIds": [
+            "cal-d1"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p4",
+          "question": "What gets me into the bike shelter?",
+          "expectedDocumentIds": [
+            "cal-d2"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p5",
+          "question": "Will a bike left for three weeks get a notice?",
+          "expectedDocumentIds": [
+            "cal-d2"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p6",
+          "question": "Can I charge my bicycle battery there?",
+          "expectedDocumentIds": [
+            "cal-d2"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p7",
+          "question": "How long is a rehearsal session?",
+          "expectedDocumentIds": [
+            "cal-d3"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p8",
+          "question": "What is the limit on advance rehearsal bookings?",
+          "expectedDocumentIds": [
+            "cal-d3"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p9",
+          "question": "How early should I cancel a rehearsal?",
+          "expectedDocumentIds": [
+            "cal-d3"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p10",
+          "question": "Can I take seeds without bringing any?",
+          "expectedDocumentIds": [
+            "cal-d4"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p11",
+          "question": "What belongs on the seed envelopes?",
+          "expectedDocumentIds": [
+            "cal-d4"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p12",
+          "question": "Are tree seeds accepted?",
+          "expectedDocumentIds": [
+            "cal-d4"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p13",
+          "question": "What format should my print file use?",
+          "expectedDocumentIds": [
+            "cal-d5"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p14",
+          "question": "Where do completed print jobs go?",
+          "expectedDocumentIds": [
+            "cal-d5"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p15",
+          "question": "What free printing allowance does a team receive?",
+          "expectedDocumentIds": [
+            "cal-d5"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p16",
+          "question": "Where can two people reserve a space for an hour?",
+          "expectedDocumentIds": [
+            "cal-d6",
+            "cal-d8"
+          ],
+          "slice": "positive",
+          "category": "ambiguous-supported"
+        },
+        {
+          "id": "cal-p17",
+          "question": "Which spaces ask users to leave the door open?",
+          "expectedDocumentIds": [
+            "cal-d6",
+            "cal-d8"
+          ],
+          "slice": "positive",
+          "category": "ambiguous-supported"
+        },
+        {
+          "id": "cal-p18",
+          "question": "May I use the nook without reserving it?",
+          "expectedDocumentIds": [
+            "cal-d6"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p19",
+          "question": "What do I show to collect a parcel?",
+          "expectedDocumentIds": [
+            "cal-d7"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-p20",
+          "question": "How long are parcels held before being sent back?",
+          "expectedDocumentIds": [
+            "cal-d7"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "cal-n1",
+          "question": "How do I replace a kitchen cupboard hinge?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "cal-n2",
+          "question": "What is Lark town's population?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "cal-n3",
+          "question": "Who wrote the novel The Amber Door?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "cal-n4",
+          "question": "How much sunlight does a willow tree need?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "cal-n5",
+          "question": "How do I propagate an orchid?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "cal-n6",
+          "question": "When is high tide in the harbor?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "cal-n7",
+          "question": "How tall do young pine trees grow?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "cal-n8",
+          "question": "Can clover flowers dye fabric?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "cal-n9",
+          "question": "How do I fix a blue screen computer error?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "cal-n10",
+          "question": "How can I recycle a bicycle tire at home?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "cal-n11",
+          "question": "What deposit is required for Juniper tools?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "cal-n12",
+          "question": "Who do I call if a borrowed tool breaks?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "cal-n13",
+          "question": "What does a replacement shelter access card cost?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "cal-n14",
+          "question": "Does Lark's shelter have security cameras?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "cal-n15",
+          "question": "What does an Amber rehearsal cost?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "cal-n16",
+          "question": "What penalty applies to late rehearsal cancellations?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "cal-n17",
+          "question": "Where in Willow Garden is the exchange table?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "cal-n18",
+          "question": "What does printing beyond the free allowance cost?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "cal-n19",
+          "question": "Does the Harbor nook have a projector?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "cal-n20",
+          "question": "May someone else collect my Pine parcel?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        }
+      ]
+    },
+    "holdout": {
+      "documents": [
+        {
+          "documentId": "hold-d1",
+          "title": "Maple archive cart",
+          "topic": "archive scanning",
+          "text": "Club members borrow the cart Wednesdays 10:00–13:00. It includes a flatbed scanner and cotton gloves. Return it to the archive desk the same day.",
+          "current": true
+        },
+        {
+          "documentId": "hold-d2",
+          "title": "Kestrel pottery kiln",
+          "topic": "pottery firing",
+          "text": "Glazed pieces are accepted every second Monday. Mark the maker's studio number on the base. Only studio-approved glazes qualify. Collect fired pieces from shelf B after notification.",
+          "current": true
+        },
+        {
+          "documentId": "hold-d3",
+          "title": "Copper refill station",
+          "topic": "water refill",
+          "text": "The station beside the notice board operates daily 07:00–21:00. Bring your own bottle. It serves still water only. Start flow with the foot pedal.",
+          "current": true
+        },
+        {
+          "documentId": "hold-d4",
+          "title": "Fern shuttle loop",
+          "topic": "campus shuttle",
+          "text": "The free shuttle travels between east gate and observatory every twenty minutes, weekdays 08:00–18:00. Board in arrival order. Advance reservations are unavailable.",
+          "current": true
+        },
+        {
+          "documentId": "hold-d5",
+          "title": "Mosaic repair table",
+          "topic": "textile mending",
+          "text": "Thursday evening volunteers help repair buttons, hems, and small tears. Bring a clean garment. Needles and thread are supplied; replacement zippers are not.",
+          "current": true
+        },
+        {
+          "documentId": "hold-d6",
+          "title": "Dune game cabinet",
+          "topic": "board game loans",
+          "text": "Each household may borrow one board game for seven days. A slip lists its pieces. Return games to the front desk even if pieces are missing.",
+          "current": true
+        },
+        {
+          "documentId": "hold-d7",
+          "title": "Birch compost bay",
+          "topic": "shared composting",
+          "text": "Add fruit scraps, vegetable scraps, and coffee grounds. Meat and cooked meals are excluded. Chop large scraps and cover additions with dry leaves from the adjacent bin.",
+          "current": true
+        },
+        {
+          "documentId": "hold-d8",
+          "title": "Saffron display wall",
+          "topic": "art display",
+          "text": "Paper art up to A3 is accepted at the front desk by the twentieth monthly. Displays change monthly. Collect removed art from the front desk within seven days.",
+          "current": true
+        }
+      ],
+      "queries": [
+        {
+          "id": "hold-p1",
+          "question": "When may members borrow the scanning cart?",
+          "expectedDocumentIds": [
+            "hold-d1"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p2",
+          "question": "Can a nonmember borrow the cart?",
+          "expectedDocumentIds": [
+            "hold-d1"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p3",
+          "question": "Must the scanner cart come back before tomorrow?",
+          "expectedDocumentIds": [
+            "hold-d1"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p4",
+          "question": "What identification goes on a pot's base?",
+          "expectedDocumentIds": [
+            "hold-d2"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p5",
+          "question": "Can I use any glaze for firing?",
+          "expectedDocumentIds": [
+            "hold-d2"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p6",
+          "question": "Where do finished fired pieces await collection?",
+          "expectedDocumentIds": [
+            "hold-d2"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p7",
+          "question": "Is sparkling water available?",
+          "expectedDocumentIds": [
+            "hold-d3"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p8",
+          "question": "How do I start the water flow?",
+          "expectedDocumentIds": [
+            "hold-d3"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p9",
+          "question": "Where is the refill station?",
+          "expectedDocumentIds": [
+            "hold-d3"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p10",
+          "question": "How frequently does the campus shuttle run?",
+          "expectedDocumentIds": [
+            "hold-d4"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p11",
+          "question": "Can I book a shuttle seat ahead?",
+          "expectedDocumentIds": [
+            "hold-d4"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p12",
+          "question": "Do shuttle riders pay a fare?",
+          "expectedDocumentIds": [
+            "hold-d4"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p13",
+          "question": "Which clothing repairs can volunteers help with?",
+          "expectedDocumentIds": [
+            "hold-d5"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p14",
+          "question": "Must I bring sewing needles?",
+          "expectedDocumentIds": [
+            "hold-d5"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p15",
+          "question": "How long may a household keep a game?",
+          "expectedDocumentIds": [
+            "hold-d6"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p16",
+          "question": "Should I return a game with a missing piece?",
+          "expectedDocumentIds": [
+            "hold-d6"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p17",
+          "question": "What covers newly added compost scraps?",
+          "expectedDocumentIds": [
+            "hold-d7"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p18",
+          "question": "Can cooked leftovers go into the compost?",
+          "expectedDocumentIds": [
+            "hold-d7"
+          ],
+          "slice": "positive",
+          "category": "supported-paraphrase"
+        },
+        {
+          "id": "hold-p19",
+          "question": "Which services involve returning or collecting items at a front desk?",
+          "expectedDocumentIds": [
+            "hold-d6",
+            "hold-d8"
+          ],
+          "slice": "positive",
+          "category": "ambiguous-supported"
+        },
+        {
+          "id": "hold-p20",
+          "question": "Which activities require bringing an item of my own?",
+          "expectedDocumentIds": [
+            "hold-d3",
+            "hold-d5"
+          ],
+          "slice": "positive",
+          "category": "ambiguous-supported"
+        },
+        {
+          "id": "hold-n1",
+          "question": "What grade is maple syrup?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "hold-n2",
+          "question": "How fast can a kestrel fly?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "hold-n3",
+          "question": "What is copper's melting point?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "hold-n4",
+          "question": "How should I water a fern houseplant?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "hold-n5",
+          "question": "Where is the oldest ancient mosaic?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "hold-n6",
+          "question": "Where was the movie Dune filmed?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "hold-n7",
+          "question": "How can I identify birch bark?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "hold-n8",
+          "question": "How much saffron goes into rice?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "hold-n9",
+          "question": "Why does a spacecraft glow during reentry?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "hold-n10",
+          "question": "How do I replace a keyboard circuit board?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "incidental-keyword-overlap"
+        },
+        {
+          "id": "hold-n11",
+          "question": "What does Maple charge per scan?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "hold-n12",
+          "question": "What resolution does the cart scanner support?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "hold-n13",
+          "question": "At what temperature does Kestrel fire pottery?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "hold-n14",
+          "question": "Who pays if a pot cracks during firing?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "hold-n15",
+          "question": "When was Copper's water last tested?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "hold-n16",
+          "question": "Can wheelchair users board the Fern shuttle?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "hold-n17",
+          "question": "How long is the shuttle trip?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "hold-n18",
+          "question": "Do I need a Mosaic repair appointment?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "hold-n19",
+          "question": "What is the fine for an overdue Dune game?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        },
+        {
+          "id": "hold-n20",
+          "question": "How does Saffron select artworks?",
+          "expectedDocumentIds": [],
+          "slice": "negative",
+          "category": "topical-missing-detail"
+        }
+      ]
+    }
+  }
+}
