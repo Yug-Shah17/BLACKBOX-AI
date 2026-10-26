@@ -52,3 +52,40 @@ test("request cancellation remains cancellation rather than a connectivity error
   context.mock.method(globalThis, "fetch", async () => { throw new DOMException("Cancelled", "AbortError"); });
   await assert.rejects(api("/runs", undefined, controller.signal), { name: "AbortError" });
 });
+
+test("stalled requests have a deadline and warn about possibly saved runs", async context => {
+  const deadline = new AbortController();
+  context.mock.method(AbortSignal, "timeout", milliseconds => {
+    assert.equal(milliseconds, 90_000);
+    return deadline.signal;
+  });
+  context.mock.method(globalThis, "fetch", async (_url, options) => {
+    assert.ok(options.signal);
+    return new Promise((_resolve, reject) => options.signal.addEventListener("abort", () => reject(options.signal.reason), { once: true }));
+  });
+  const pending = api("/document-runs", { question: "private question" });
+  deadline.abort(new DOMException("Timed out", "TimeoutError"));
+  await assert.rejects(pending, /Refresh run history before retrying; a submitted run may still have been saved/);
+});
+
+test("the deadline also covers stalled response bodies", async context => {
+  const deadline = new AbortController();
+  context.mock.method(AbortSignal, "timeout", () => deadline.signal);
+  context.mock.method(globalThis, "fetch", async (_url, options) => {
+    const response = new Response();
+    response.json = () => new Promise((_resolve, reject) => options.signal.addEventListener("abort", () => reject(options.signal.reason), { once: true }));
+    return response;
+  });
+  const pending = api("/document-runs");
+  await Promise.resolve();
+  deadline.abort(new DOMException("Timed out", "TimeoutError"));
+  await assert.rejects(pending, /took too long to respond/);
+});
+
+test("caller cancellation interrupts an active request without a timeout message", async context => {
+  const caller = new AbortController();
+  context.mock.method(globalThis, "fetch", async (_url, options) => new Promise((_resolve, reject) => options.signal.addEventListener("abort", () => reject(options.signal.reason), { once: true })));
+  const pending = api("/runs", undefined, caller.signal);
+  caller.abort();
+  await assert.rejects(pending, { name: "AbortError" });
+});

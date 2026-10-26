@@ -54,12 +54,18 @@ export interface MeasuredMetrics {
 }
 export async function api<T>(path: string, body?: unknown, signal?: AbortSignal): Promise<T> {
   const payload = body === undefined ? undefined : JSON.stringify(body);
+  const deadline = AbortSignal.timeout(90_000);
+  const requestSignal = signal ? AbortSignal.any([signal, deadline]) : deadline;
+  const rethrowCancellation = (error: unknown): never => {
+    if (!signal?.aborted && deadline.aborted) throw new Error("Black Box took too long to respond. Refresh run history before retrying; a submitted run may still have been saved.", { cause: error });
+    throw error;
+  };
   let response: Response;
   try {
-    response = await fetch(`/api/blackbox${path}`, { method: body === undefined ? "GET" : "POST", cache: "no-store", signal,
+    response = await fetch(`/api/blackbox${path}`, { method: body === undefined ? "GET" : "POST", cache: "no-store", signal: requestSignal,
       headers: body === undefined ? undefined : { "Content-Type": "application/json" }, body: payload });
   } catch (error) {
-    if (signal?.aborted || (error instanceof Error && error.name === "AbortError")) throw error;
+    if (signal?.aborted || deadline.aborted || (error instanceof Error && error.name === "AbortError")) rethrowCancellation(error);
     throw new Error("Could not reach Black Box. Check your connection and that the demo service is available, then try again.", { cause: error });
   }
   if (!response.ok) {
@@ -78,10 +84,12 @@ export async function api<T>(path: string, body?: unknown, signal?: AbortSignal)
         });
         if (messages.length) detail = messages.slice(0, 3).join("; ") + (messages.length > 3 ? ` (+${messages.length - 3} more)` : "");
       }
-    } catch { /* Proxy errors may not be JSON. */ }
+    } catch (error) {
+      if (signal?.aborted || deadline.aborted) rethrowCancellation(error);
+    }
     throw new Error(detail);
   }
-  return response.json();
+  return response.json().catch(rethrowCancellation);
 }
 export async function startGuidedDemo(): Promise<RecordedRun> {
   const scenarios = await api<DocumentScenario[]>("/document-scenarios");
