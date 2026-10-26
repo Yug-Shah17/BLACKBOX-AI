@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Braces, Calculator, Check, CheckCh
 import { api, DocumentContext, duration, exportFile, isDocumentRun, RecordedRun, ReplayOutcome, runBase, RunDiagnosis, runTitle, shortId, TraceDiff } from "@/lib/api";
 import { FileText } from "lucide-react";
 import { runReport } from "@/lib/run-report";
-import { DocumentEvidence } from "./document-evidence";
+import { classifyRecordedOutput, DocumentEvidence } from "./document-evidence";
 import { documentReplacement } from "@/lib/document-replacement";
 import { DownloadButton, ErrorNotice, JsonBlock, Loading, Status } from "./primitives";
 import { WorkspaceTabs } from "./tabs";
@@ -143,7 +143,28 @@ export default function TraceWorkspace({ runId }: { runId: string }) {
       {!pair ? <div className="empty-state"><GitCompareArrows size={28} /><h3>No replay branches yet</h3><button className="button" disabled={!supportsReplay} onClick={() => setTab("replay")}><GitBranch size={14} />Create a replay</button></div> : !diff ? (!diffError ? <Loading /> : null) : <>
         <div className="comparison-outcomes"><div><small>ORIGINAL EXECUTION</small><span className="mono">{shortId(diff.originalRunId)}</span><Status value={diff.originalOutcome} /></div><ArrowRight size={20} /><div><small>REPLAY BRANCH</small><Link href={`/trace/${diff.replayRunId}`} className="mono">{shortId(diff.replayRunId)}<ArrowUpRight size={12} /></Link><Status value={diff.replayOutcome} /></div><span className="comparison-verdict">{diff.originalOutcome === "failed" && diff.replayOutcome === "success" ? <><Check size={16} />Outcome improved</> : "Execution recorded"}</span></div>
         {replayResult && <div className="replay-proof"><span><CheckCheck size={14} />{replayResult.reusedSteps.length} steps reused</span><span><Play size={13} />{replayResult.executedSteps.length} steps executed</span><span><GitBranch size={13} />{replayResult.changedSteps.length} steps changed</span></div>}
-        {comparedAnswer && <div className="answer-comparison" aria-label="Answer comparison"><section><h3>Original answer</h3><p>{typeof comparedAnswer.original.outputData?.answer === "string" ? comparedAnswer.original.outputData.answer : "No answer recorded"}</p></section><section><h3>Replay answer</h3><p>{typeof comparedAnswer.replay.outputData?.answer === "string" ? comparedAnswer.replay.outputData.answer : "No answer recorded"}</p></section></div>}
+        {comparedAnswer && (() => {
+          const originalClassification = classifyRecordedOutput({ agentName: run.agentName, source: run.source, steps: run.steps }, comparedAnswer.original, context);
+          const replayClassification = classifyRecordedOutput({ agentName: run.agentName, source: run.source, steps: run.steps }, comparedAnswer.replay, context);
+          return <div className="answer-comparison" aria-label="Answer comparison">
+            <section>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
+                <h3>Original answer</h3>
+                <span className="status neutral">{originalClassification.label}</span>
+              </div>
+              <p>{typeof comparedAnswer.original.outputData?.answer === "string" ? comparedAnswer.original.outputData.answer : "No answer recorded"}</p>
+              {originalClassification.explanation && <p className="quiet-label" style={{ marginTop: 8 }}>{originalClassification.explanation}</p>}
+            </section>
+            <section>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
+                <h3>Replay answer</h3>
+                <span className="status neutral">{replayClassification.label}</span>
+              </div>
+              <p>{typeof comparedAnswer.replay.outputData?.answer === "string" ? comparedAnswer.replay.outputData.answer : "No answer recorded"}</p>
+              {replayClassification.explanation && <p className="quiet-label" style={{ marginTop: 8 }}>{replayClassification.explanation}</p>}
+            </section>
+          </div>;
+        })()}
         <div className="diff-toolbar"><span className="quiet-label">{diff.divergenceStep ? `First divergence at step ${String(diff.divergenceStep).padStart(2, "0")}` : "No semantic differences"}</span><label><input type="checkbox" checked={changedOnly} onChange={e => setChangedOnly(e.target.checked)} />Changed steps only</label></div>
         <div className="diff-column-labels"><span>STEP</span><span>ORIGINAL OUTPUT</span><span>REPLAY OUTPUT</span></div>
         {diff.steps.filter(item => !changedOnly || item.changed).map(item => <div key={item.stepId} className={`diff-row ${item.changed ? "changed" : ""}`}><div className="diff-step"><span className="mono">{String(item.stepId).padStart(2, "0")}</span><strong>{titles[item.original?.stepType] || item.original?.stepType}</strong><small>{item.changed ? "Changed" : "Unchanged"}</small></div><JsonBlock value={item.original?.outputData || item.original?.output} /><JsonBlock value={item.replay?.outputData || item.replay?.output} /></div>)}
