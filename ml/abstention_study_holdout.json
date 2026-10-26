@@ -1,0 +1,676 @@
+{
+  "fixtureSha256": "b1d51439900845fdae907620664c5d7cff629d6b5ce98f4f8443deb52075f0b7",
+  "workflowVersion": "document-qa-v3",
+  "selectedThreshold": 0,
+  "baseline": {
+    "positiveQueries": 20,
+    "negativeQueries": 20,
+    "top1Hits": 20,
+    "mrr": 1.0,
+    "meanRecallAt3": 0.975,
+    "negativeAbstentions": 1
+  },
+  "candidate": {
+    "positiveQueries": 20,
+    "negativeQueries": 20,
+    "top1Hits": 20,
+    "mrr": 1.0,
+    "meanRecallAt3": 0.975,
+    "negativeAbstentions": 1
+  },
+  "retainedCorrectPositives": 20,
+  "baselineCorrectPositives": 20,
+  "positiveRetention": 1.0,
+  "acceptancePassed": false,
+  "failureQueryIds": [
+    "hold-n1",
+    "hold-n2",
+    "hold-n3",
+    "hold-n4",
+    "hold-n5",
+    "hold-n6",
+    "hold-n7",
+    "hold-n8",
+    "hold-n10",
+    "hold-n11",
+    "hold-n12",
+    "hold-n13",
+    "hold-n14",
+    "hold-n15",
+    "hold-n16",
+    "hold-n17",
+    "hold-n18",
+    "hold-n19",
+    "hold-n20"
+  ],
+  "queries": [
+    {
+      "id": "hold-p1",
+      "question": "When may members borrow the scanning cart?",
+      "expectedDocumentIds": [
+        "hold-d1"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.7933063520794305,
+      "baseline": [
+        "hold-d1",
+        "hold-d6"
+      ],
+      "candidate": [
+        "hold-d1",
+        "hold-d6"
+      ]
+    },
+    {
+      "id": "hold-p2",
+      "question": "Can a nonmember borrow the cart?",
+      "expectedDocumentIds": [
+        "hold-d1"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.5900949075052478,
+      "baseline": [
+        "hold-d1",
+        "hold-d6"
+      ],
+      "candidate": [
+        "hold-d1",
+        "hold-d6"
+      ]
+    },
+    {
+      "id": "hold-p3",
+      "question": "Must the scanner cart come back before tomorrow?",
+      "expectedDocumentIds": [
+        "hold-d1"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.2385485640340836,
+      "baseline": [
+        "hold-d1"
+      ],
+      "candidate": [
+        "hold-d1"
+      ]
+    },
+    {
+      "id": "hold-p4",
+      "question": "What identification goes on a pot's base?",
+      "expectedDocumentIds": [
+        "hold-d2"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.34302832973581365,
+      "baseline": [
+        "hold-d2"
+      ],
+      "candidate": [
+        "hold-d2"
+      ]
+    },
+    {
+      "id": "hold-p5",
+      "question": "Can I use any glaze for firing?",
+      "expectedDocumentIds": [
+        "hold-d2"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.20702123994740448,
+      "baseline": [
+        "hold-d2"
+      ],
+      "candidate": [
+        "hold-d2"
+      ]
+    },
+    {
+      "id": "hold-p6",
+      "question": "Where do finished fired pieces await collection?",
+      "expectedDocumentIds": [
+        "hold-d2"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.3242617897034416,
+      "baseline": [
+        "hold-d2",
+        "hold-d6"
+      ],
+      "candidate": [
+        "hold-d2",
+        "hold-d6"
+      ]
+    },
+    {
+      "id": "hold-p7",
+      "question": "Is sparkling water available?",
+      "expectedDocumentIds": [
+        "hold-d3"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.281403598932747,
+      "baseline": [
+        "hold-d3"
+      ],
+      "candidate": [
+        "hold-d3"
+      ]
+    },
+    {
+      "id": "hold-p8",
+      "question": "How do I start the water flow?",
+      "expectedDocumentIds": [
+        "hold-d3"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 1.0,
+      "baseline": [
+        "hold-d3"
+      ],
+      "candidate": [
+        "hold-d3"
+      ]
+    },
+    {
+      "id": "hold-p9",
+      "question": "Where is the refill station?",
+      "expectedDocumentIds": [
+        "hold-d3"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 1.0,
+      "baseline": [
+        "hold-d3"
+      ],
+      "candidate": [
+        "hold-d3"
+      ]
+    },
+    {
+      "id": "hold-p10",
+      "question": "How frequently does the campus shuttle run?",
+      "expectedDocumentIds": [
+        "hold-d4"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.43921150083724114,
+      "baseline": [
+        "hold-d4"
+      ],
+      "candidate": [
+        "hold-d4"
+      ]
+    },
+    {
+      "id": "hold-p11",
+      "question": "Can I book a shuttle seat ahead?",
+      "expectedDocumentIds": [
+        "hold-d4"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.20702123994740448,
+      "baseline": [
+        "hold-d4"
+      ],
+      "candidate": [
+        "hold-d4"
+      ]
+    },
+    {
+      "id": "hold-p12",
+      "question": "Do shuttle riders pay a fare?",
+      "expectedDocumentIds": [
+        "hold-d4"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.20702123994740448,
+      "baseline": [
+        "hold-d4"
+      ],
+      "candidate": [
+        "hold-d4"
+      ]
+    },
+    {
+      "id": "hold-p13",
+      "question": "Which clothing repairs can volunteers help with?",
+      "expectedDocumentIds": [
+        "hold-d5"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.34302832973581365,
+      "baseline": [
+        "hold-d5"
+      ],
+      "candidate": [
+        "hold-d5"
+      ]
+    },
+    {
+      "id": "hold-p14",
+      "question": "Must I bring sewing needles?",
+      "expectedDocumentIds": [
+        "hold-d5"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.41853519832395686,
+      "baseline": [
+        "hold-d5",
+        "hold-d3"
+      ],
+      "candidate": [
+        "hold-d5",
+        "hold-d3"
+      ]
+    },
+    {
+      "id": "hold-p15",
+      "question": "How long may a household keep a game?",
+      "expectedDocumentIds": [
+        "hold-d6"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.540188705267852,
+      "baseline": [
+        "hold-d6"
+      ],
+      "candidate": [
+        "hold-d6"
+      ]
+    },
+    {
+      "id": "hold-p16",
+      "question": "Should I return a game with a missing piece?",
+      "expectedDocumentIds": [
+        "hold-d6"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.6897100965361499,
+      "baseline": [
+        "hold-d6",
+        "hold-d1"
+      ],
+      "candidate": [
+        "hold-d6",
+        "hold-d1"
+      ]
+    },
+    {
+      "id": "hold-p17",
+      "question": "What covers newly added compost scraps?",
+      "expectedDocumentIds": [
+        "hold-d7"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.34302832973581365,
+      "baseline": [
+        "hold-d7"
+      ],
+      "candidate": [
+        "hold-d7"
+      ]
+    },
+    {
+      "id": "hold-p18",
+      "question": "Can cooked leftovers go into the compost?",
+      "expectedDocumentIds": [
+        "hold-d7"
+      ],
+      "slice": "positive",
+      "category": "supported-paraphrase",
+      "coverage": 0.34302832973581365,
+      "baseline": [
+        "hold-d7"
+      ],
+      "candidate": [
+        "hold-d7"
+      ]
+    },
+    {
+      "id": "hold-p19",
+      "question": "Which services involve returning or collecting items at a front desk?",
+      "expectedDocumentIds": [
+        "hold-d6",
+        "hold-d8"
+      ],
+      "slice": "positive",
+      "category": "ambiguous-supported",
+      "coverage": 0.16929637261292366,
+      "baseline": [
+        "hold-d6",
+        "hold-d8",
+        "hold-d1"
+      ],
+      "candidate": [
+        "hold-d6",
+        "hold-d8",
+        "hold-d1"
+      ]
+    },
+    {
+      "id": "hold-p20",
+      "question": "Which activities require bringing an item of my own?",
+      "expectedDocumentIds": [
+        "hold-d3",
+        "hold-d5"
+      ],
+      "slice": "positive",
+      "category": "ambiguous-supported",
+      "coverage": 0.13542727273844604,
+      "baseline": [
+        "hold-d3"
+      ],
+      "candidate": [
+        "hold-d3"
+      ]
+    },
+    {
+      "id": "hold-n1",
+      "question": "What grade is maple syrup?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "incidental-keyword-overlap",
+      "coverage": 0.281403598932747,
+      "baseline": [
+        "hold-d1"
+      ],
+      "candidate": [
+        "hold-d1"
+      ]
+    },
+    {
+      "id": "hold-n2",
+      "question": "How fast can a kestrel fly?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "incidental-keyword-overlap",
+      "coverage": 0.281403598932747,
+      "baseline": [
+        "hold-d2"
+      ],
+      "candidate": [
+        "hold-d2"
+      ]
+    },
+    {
+      "id": "hold-n3",
+      "question": "What is copper's melting point?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "incidental-keyword-overlap",
+      "coverage": 0.21960575041862057,
+      "baseline": [
+        "hold-d3",
+        "hold-d2"
+      ],
+      "candidate": [
+        "hold-d3",
+        "hold-d2"
+      ]
+    },
+    {
+      "id": "hold-n4",
+      "question": "How should I water a fern houseplant?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "incidental-keyword-overlap",
+      "coverage": 0.30517509107017005,
+      "baseline": [
+        "hold-d3",
+        "hold-d4"
+      ],
+      "candidate": [
+        "hold-d3",
+        "hold-d4"
+      ]
+    },
+    {
+      "id": "hold-n5",
+      "question": "Where is the oldest ancient mosaic?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "incidental-keyword-overlap",
+      "coverage": 0.281403598932747,
+      "baseline": [
+        "hold-d5"
+      ],
+      "candidate": [
+        "hold-d5"
+      ]
+    },
+    {
+      "id": "hold-n6",
+      "question": "Where was the movie Dune filmed?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "incidental-keyword-overlap",
+      "coverage": 0.20702123994740448,
+      "baseline": [
+        "hold-d6"
+      ],
+      "candidate": [
+        "hold-d6"
+      ]
+    },
+    {
+      "id": "hold-n7",
+      "question": "How can I identify birch bark?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "incidental-keyword-overlap",
+      "coverage": 0.281403598932747,
+      "baseline": [
+        "hold-d7"
+      ],
+      "candidate": [
+        "hold-d7"
+      ]
+    },
+    {
+      "id": "hold-n8",
+      "question": "How much saffron goes into rice?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "incidental-keyword-overlap",
+      "coverage": 0.1637403632161656,
+      "baseline": [
+        "hold-d8"
+      ],
+      "candidate": [
+        "hold-d8"
+      ]
+    },
+    {
+      "id": "hold-n9",
+      "question": "Why does a spacecraft glow during reentry?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "incidental-keyword-overlap",
+      "coverage": 0.0,
+      "baseline": [],
+      "candidate": []
+    },
+    {
+      "id": "hold-n10",
+      "question": "How do I replace a keyboard circuit board?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "incidental-keyword-overlap",
+      "coverage": 0.1588172512558617,
+      "baseline": [
+        "hold-d6",
+        "hold-d3",
+        "hold-d4"
+      ],
+      "candidate": [
+        "hold-d6",
+        "hold-d3",
+        "hold-d4"
+      ]
+    },
+    {
+      "id": "hold-n11",
+      "question": "What does Maple charge per scan?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "topical-missing-detail",
+      "coverage": 0.20702123994740448,
+      "baseline": [
+        "hold-d1"
+      ],
+      "candidate": [
+        "hold-d1"
+      ]
+    },
+    {
+      "id": "hold-n12",
+      "question": "What resolution does the cart scanner support?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "topical-missing-detail",
+      "coverage": 0.43921150083724114,
+      "baseline": [
+        "hold-d1"
+      ],
+      "candidate": [
+        "hold-d1"
+      ]
+    },
+    {
+      "id": "hold-n13",
+      "question": "At what temperature does Kestrel fire pottery?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "topical-missing-detail",
+      "coverage": 0.43921150083724114,
+      "baseline": [
+        "hold-d2"
+      ],
+      "candidate": [
+        "hold-d2"
+      ]
+    },
+    {
+      "id": "hold-n14",
+      "question": "Who pays if a pot cracks during firing?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "topical-missing-detail",
+      "coverage": 0.1407017994663735,
+      "baseline": [
+        "hold-d2",
+        "hold-d6"
+      ],
+      "candidate": [
+        "hold-d2",
+        "hold-d6"
+      ]
+    },
+    {
+      "id": "hold-n15",
+      "question": "When was Copper's water last tested?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "topical-missing-detail",
+      "coverage": 0.29280766722482743,
+      "baseline": [
+        "hold-d3",
+        "hold-d2"
+      ],
+      "candidate": [
+        "hold-d3",
+        "hold-d2"
+      ]
+    },
+    {
+      "id": "hold-n16",
+      "question": "Can wheelchair users board the Fern shuttle?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "topical-missing-detail",
+      "coverage": 0.5160682164896946,
+      "baseline": [
+        "hold-d4",
+        "hold-d6",
+        "hold-d3"
+      ],
+      "candidate": [
+        "hold-d4",
+        "hold-d6",
+        "hold-d3"
+      ]
+    },
+    {
+      "id": "hold-n17",
+      "question": "How long is the shuttle trip?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "topical-missing-detail",
+      "coverage": 0.281403598932747,
+      "baseline": [
+        "hold-d4"
+      ],
+      "candidate": [
+        "hold-d4"
+      ]
+    },
+    {
+      "id": "hold-n18",
+      "question": "Do I need a Mosaic repair appointment?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "topical-missing-detail",
+      "coverage": 0.43921150083724114,
+      "baseline": [
+        "hold-d5"
+      ],
+      "candidate": [
+        "hold-d5"
+      ]
+    },
+    {
+      "id": "hold-n19",
+      "question": "What is the fine for an overdue Dune game?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "topical-missing-detail",
+      "coverage": 0.43921150083724114,
+      "baseline": [
+        "hold-d6"
+      ],
+      "candidate": [
+        "hold-d6"
+      ]
+    },
+    {
+      "id": "hold-n20",
+      "question": "How does Saffron select artworks?",
+      "expectedDocumentIds": [],
+      "slice": "negative",
+      "category": "topical-missing-detail",
+      "coverage": 0.281403598932747,
+      "baseline": [
+        "hold-d8"
+      ],
+      "candidate": [
+        "hold-d8"
+      ]
+    }
+  ]
+}
