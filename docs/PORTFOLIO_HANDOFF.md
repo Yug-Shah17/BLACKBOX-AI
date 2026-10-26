@@ -73,3 +73,15 @@ Draft integration PR: https://github.com/Yug-Shah17/BLACKBOX-AI/pull/1. Feature 
 ## Additional review and QA
 
 A separately agent-authored frozen stress set and its paired results are documented in [Retrieval Review Protocol](RETRIEVAL_REVIEW_PROTOCOL.md). It exposes worse unsupported-question abstention in v3 despite better positive-query ranking. [Broader QA](QA_OCT26.md) records four-format uploads, parser error recovery, real local API outage/restart, hosted old-release replay/export, keyboard/mobile/theme checks and remaining limits.
+
+## Reviewed output labels and rejected abstention experiment — 26 October
+
+Output labels now distinguish matching literal source text, a recorded expected word count and provider output backed by matching response evidence. Manual replay metadata does not imply that a provider generated the replacement. Comparison uses each side's own recorded steps. Two new regressions first reproduced the remaining Antigravity bugs; the coordinator fixed them and a second review found no substantive remaining issue in that scope. See [coordinator review](ANTIGRAVITY_COORDINATOR_REVIEW.md).
+
+Current validation: **48 frontend tests**, lint, explicit TypeScript and production build passed in the integration checkout. The existing **86 Python tests** and all quality-gate benchmarks passed; **3 additional offline-study tests** also passed after integration. Four separate original browser uploads (TXT, MD, PDF and DOCX) each returned count3 with their own citation. Browser checks also verified wrong manual count and literal-extract replay labels against actual retained checkpoint metadata. Original count3/success stayed unchanged.
+
+The remaining new-label mobile/theme, Escape/focus and final download checks are blocked by a saved browser origin permission. The owner approved continuing in chat, but the tool still reports a saved permission or managed policy denying access. No workaround was attempted. Earlier mobile/theme/export checks apply to their documented earlier revision and do not establish the new labels' mobile layout. Regular Chrome control is unavailable. This is a bounded tested prototype, not a claim that every website interaction is complete.
+
+A further offline study [tested a lexical coverage abstention gate](ABSTENTION_STUDY_RESULTS.md) on separately frozen calibration and holdout questions. Aggressive thresholds lost too many correctly retrieved calibration positives, so the predeclared rule selected threshold0. Holdout predictions stayed unchanged: top1 agreed with frozen relevance labels20/20; unsupported abstention1/20. One positive relevance label is debatable and disclosed. The candidate failed acceptance and was **not adopted into runtime**. These synthetic results must remain separate from the original4/17→15/17 and review7/12→12/12 reports.
+
+Interview explanation: “I also measured a possible abstention filter. It rejected useful supported questions, so I published that negative result and kept the working behavior rather than presenting it as an improvement.”
