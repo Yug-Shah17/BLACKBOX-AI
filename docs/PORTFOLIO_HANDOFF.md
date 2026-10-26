@@ -85,3 +85,5 @@ The remaining new-label mobile/theme, Escape/focus and final download checks are
 A further offline study [tested a lexical coverage abstention gate](ABSTENTION_STUDY_RESULTS.md) on separately frozen calibration and holdout questions. Aggressive thresholds lost too many correctly retrieved calibration positives, so the predeclared rule selected threshold0. Holdout predictions stayed unchanged: top1 agreed with frozen relevance labels20/20; unsupported abstention1/20. One positive relevance label is debatable and disclosed. The candidate failed acceptance and was **not adopted into runtime**. These synthetic results must remain separate from the original4/17→15/17 and review7/12→12/12 reports.
 
 Interview explanation: “I also measured a possible abstention filter. It rejected useful supported questions, so I published that negative result and kept the working behavior rather than presenting it as an improvement.”
+
+For a beginner-friendly architecture walkthrough, replay example, metric definitions and interview practice, see [Understand the project](UNDERSTAND_THE_PROJECT.md).
