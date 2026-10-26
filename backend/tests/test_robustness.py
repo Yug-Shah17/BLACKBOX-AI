@@ -233,6 +233,19 @@ class RobustnessTests(unittest.TestCase):
         self.assertEqual(store.path.read_bytes(), before)
         self.assertEqual(list(store.directory.glob("state-*.tmp")), [])
 
+    def test_failed_temporary_cleanup_preserves_storage_error_and_original(self):
+        original = self.client.post("/runs", json={}).json()
+        store = self.app.state.store
+        before = store.path.read_bytes()
+        with patch("backend.app.services.store.os.replace", side_effect=OSError("disk error")), \
+                patch("backend.app.services.store.Path.unlink", side_effect=PermissionError("cleanup denied")):
+            response = self.client.post("/runs", json={})
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json(), {"detail": "Could not persist run data"})
+        self.assertEqual(store.path.read_bytes(), before)
+        self.assertEqual(self.client.get(f"/runs/{original['runId']}").json(), original)
+        self.assertEqual(len(list(store.directory.glob("state-*.tmp"))), 1)
+
     def test_malformed_store_records_return_service_error(self):
         run = self.client.post("/runs", json={"failureType": "normal"}).json()
         path = self.directory / "state.json"
