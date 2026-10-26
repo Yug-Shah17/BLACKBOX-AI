@@ -17,6 +17,16 @@ class RetrievalTests(unittest.TestCase):
             with self.subTest(version=version):
                 self.assertEqual(evaluate(version), json.loads((root / filename).read_text(encoding="utf-8")))
 
+    def test_frozen_review_measurements_reproduce(self):
+        root = Path(__file__).resolve().parents[2] / "ml"
+        fixture = root / "retrieval_review_cases.json"
+        for version, filename in ((documents.PREVIOUS_VERSION, "retrieval_review_baseline.json"),
+                                  (documents.VERSION, "retrieval_review_improved.json")):
+            with self.subTest(version=version):
+                measured = evaluate(version, fixture)
+                self.assertEqual(measured, json.loads((root / filename).read_text(encoding="utf-8")))
+                self.assertEqual(measured["summary"]["review"]["negativeQueries"], 4)
+
     def test_legacy_replay_retains_topic_overlap_and_supplied_order(self):
         config = documents.DocumentRequest(question="What is the returns policy?", documents=[
             {"documentId": "privacy", "title": "Privacy", "topic": "privacy policy", "text": "Private."},
