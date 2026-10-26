@@ -42,7 +42,7 @@ test("non-JSON not-found responses retain their original status fallback", async
 test("network failures give a recovery action without leaking request data", async context => {
   context.mock.method(globalThis, "fetch", async () => { throw new TypeError("Failed to fetch"); });
   await assert.rejects(api("/document-runs", { question: "private question" }), {
-    message: "Could not reach the local service. Check that Black Box is running, then try again.",
+    message: "Could not reach Black Box. Check your connection and that the demo service is available, then try again.",
   });
 });
 

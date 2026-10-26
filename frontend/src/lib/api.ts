@@ -60,7 +60,7 @@ export async function api<T>(path: string, body?: unknown, signal?: AbortSignal)
       headers: body === undefined ? undefined : { "Content-Type": "application/json" }, body: payload });
   } catch (error) {
     if (signal?.aborted || (error instanceof Error && error.name === "AbortError")) throw error;
-    throw new Error("Could not reach the local service. Check that Black Box is running, then try again.", { cause: error });
+    throw new Error("Could not reach Black Box. Check your connection and that the demo service is available, then try again.", { cause: error });
   }
   if (!response.ok) {
     let detail = response.status >= 500
