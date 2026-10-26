@@ -144,21 +144,8 @@ export default function TraceWorkspace({ runId }: { runId: string }) {
         <div className="comparison-outcomes"><div><small>ORIGINAL EXECUTION</small><span className="mono">{shortId(diff.originalRunId)}</span><Status value={diff.originalOutcome} /></div><ArrowRight size={20} /><div><small>REPLAY BRANCH</small><Link href={`/trace/${diff.replayRunId}`} className="mono">{shortId(diff.replayRunId)}<ArrowUpRight size={12} /></Link><Status value={diff.replayOutcome} /></div><span className="comparison-verdict">{diff.originalOutcome === "failed" && diff.replayOutcome === "success" ? <><Check size={16} />Outcome improved</> : "Execution recorded"}</span></div>
         {replayResult && <div className="replay-proof"><span><CheckCheck size={14} />{replayResult.reusedSteps.length} steps reused</span><span><Play size={13} />{replayResult.executedSteps.length} steps executed</span><span><GitBranch size={13} />{replayResult.changedSteps.length} steps changed</span></div>}
         {comparedAnswer && (() => {
-          const originalClassification = classifyRecordedOutput({ agentName: run.agentName, source: run.source, steps: run.steps }, comparedAnswer.original, context);
-          // For the replay branch in a comparison, diff only contains step comparison data.
-          // Construct replay provenance from diff.steps where executionMode === 'reused' or 'executed'.
-          // If the generation step was overridden/executed as an alternative output, do not borrow original retrieval/agent metadata blindly.
-          const replaySteps = diff.steps.map(s => s.replay);
-          const replayGenStep = comparedAnswer.replay;
-          const isReusedGen = replayGenStep.executionMode === "reused";
-          // If the replay step was executed rather than reused from the original prefix, it was produced by manual replacement or re-execution.
-          // Do not borrow original agentName if the replay was a manual replacement (which accepts literal source extracts).
-          const replayRunContext = {
-            agentName: isReusedGen ? run.agentName : undefined,
-            source: run.source,
-            steps: replaySteps
-          };
-          const replayClassification = classifyRecordedOutput(replayRunContext, replayGenStep, context);
+          const originalClassification = classifyRecordedOutput({ steps: diff.steps.map(item => item.original) }, comparedAnswer.original, context);
+          const replayClassification = classifyRecordedOutput({ steps: diff.steps.map(item => item.replay) }, comparedAnswer.replay, context);
           return <div className="answer-comparison" aria-label="Answer comparison">
             <section>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>

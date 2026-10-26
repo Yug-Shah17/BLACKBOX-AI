@@ -101,8 +101,8 @@ test("count output is accurately described when metadata supports it", () => {
 
   const result = classifyRecordedOutput(run, run.steps[2], null);
   assert.equal(result.kind, "word_count");
-  assert.equal(result.label, "Deterministic word count");
-  assert.match(result.explanation, /Word count computed locally/);
+  assert.equal(result.label, "Recorded word count");
+  assert.match(result.explanation, /locally computed expected count/);
 });
 
 test("word count operation with unsupported answer is not falsely claimed as a count", () => {
@@ -139,7 +139,7 @@ test("word count operation with unsupported answer is not falsely claimed as a c
   const result = classifyRecordedOutput(run, run.steps[1], null);
   assert.notEqual(result.kind, "word_count");
   assert.equal(result.label, "Recorded answer");
-  assert.match(result.explanation, /not a computed count/);
+  assert.match(result.explanation, /does not match its recorded expected count/);
 });
 
 test("provider output is clearly distinguished and never mislabeled as a local extract", () => {
@@ -359,7 +359,7 @@ test("replay comparison with literal replacement does not borrow original word_c
     agentName: undefined, // executed replacement does not borrow agentName
     source: originalRun.source,
     steps: [
-      { stepId: 1, stepType: "retrieval", status: "success", executionMode: "reused" },
+      { ...originalRun.steps[0], executionMode: "reused" },
       replayStep
     ]
   };
@@ -370,3 +370,19 @@ test("replay comparison with literal replacement does not borrow original word_c
   assert.match(result.explanation, /Matching source text does not establish whether the user's question was answered/);
 });
 
+
+test("preserved count metadata does not mislabel literal replay or wrong manual count", () => {
+  const step = { stepType: "generation", inputData: { document: mockDocument, expectedAnswer: "expected count" }, outputData: { answer: mockDocument.text, citation: mockDocument.documentId } };
+  const run = { steps: [{ stepType: "retrieval", executionMode: "reused", inputData: { operation: "word_count" } }, step] };
+  assert.equal(classifyRecordedOutput(run, step).kind, "source_extract");
+  step.outputData.answer = 'The word "integrity" appears 999 times in the selected document';
+  assert.notEqual(classifyRecordedOutput(run, step).kind, "word_count");
+});
+
+test("Gemini-version counts stay local and model metadata alone proves no provider generation", () => {
+  const expected = 'The word "integrity" appears 3 times in the selected document';
+  const countStep = { stepType: "generation", inputData: { expectedAnswer: expected }, outputData: { answer: expected } };
+  assert.equal(classifyRecordedOutput({ agentName: "gemini-document-agent", steps: [{ stepType: "retrieval", inputData: { operation: "word_count" } }, countStep] }, countStep).kind, "word_count");
+  const manual = { stepType: "generation", toolName: "gemini-3.5-flash-lite", inputData: { model: "gemini-3.5-flash-lite", document: mockDocument }, outputData: { answer: mockDocument.text, citation: mockDocument.documentId } };
+  assert.equal(classifyRecordedOutput({ agentName: "gemini-document-agent" }, manual).kind, "source_extract");
+});
