@@ -46,3 +46,7 @@ Fresh local runs use `document-qa-v3`. Recorded v1/v2 checkpoints retain their o
 - Ambiguous queries accept more than one source and stable ties depend on supplied order. The app does not ask a disambiguation question.
 - Long documents with incidental keyword matches, typos, multilingual inflections, contradictory current documents and adversarial inputs need a larger independently authored evaluation. Results do not justify a production retrieval-quality claim.
 - Local generation returns the selected document text (or an explicit word count). Retrieval success must never be presented as answer correctness or trained ML improvement.
+
+## Separately authored review
+
+A second frozen, separately agent-authored synthetic corpus improves supported-query top-1 from 7/12 to 12/12 but worsens correct negative-query abstention from 3/4 to 0/4. This demonstrates why the original three easy negatives cannot establish question-answerability. See the [review protocol and complete results](RETRIEVAL_REVIEW_PROTOCOL.md); no retrieval tuning or fixture edits followed those scores.

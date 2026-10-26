@@ -48,24 +48,28 @@ Built **Black Box**, a student prototype for inspecting document-answer workflow
 
 I improved the guided failure-to-correction demo, strengthened replay/persistence validation, and evaluated a transparent lexical retrieval change on a reproducible, developer-authored synthetic set: top-1 relevant-source selection rose from 4/17 to 15/17. The project documents failure cases and separates retrieval results from answer correctness. Document diagnosis uses rules; optional Gemini answering requires explicit consent.
 
-This is a bounded public demonstration with shared, temporary history—not a private document service or an autonomous repair system.
+A separate frozen, agent-authored synthetic review improved supported-question source ranking from 7/12 to 12/12, while exposing weaker abstention on unsupported questions (3/4 to 0/4). This is a bounded public demonstration with shared, temporary history—not a private document service or an autonomous repair system.
 
 Do not describe these metrics as real-world accuracy, trained document ML, production readiness, or an advantage over embedding retrieval. Do not imply this integration is already live.
 
 ## Verification and limits
 
-- Python 3.14 quality gate: 84 tests passed, pip check passed, arithmetic/replay/document benchmark commands completed. Includes checkpoint collision, malformed observations, version compatibility, paired retrieval reproduction and original preservation checks.
-- Frontend: 32 tests passed; lint, TypeScript and production build passed. Browser verified failure → diagnosis → correction → successful comparison, invalid JSON recovery, a wrong correction remaining failed, and 390px phone comparison without page overflow. This is a bounded smoke check, not an accessibility certification.
-- Hosted baseline: homepage renders; health/readiness and both run-list endpoints return HTTP 200. Complete hosted upload/answer/replay was not verified. The hosted code remains unchanged.
-- **Dependency remediation:** owner-approved updates pin Next.js and eslint-config-next to 16.4.1 and update transitive Zod to 4.6.7. The post-update npm audit reports zero known vulnerabilities. All 32 frontend tests, lint, TypeScript and production build passed again. See [dependency findings](DEPENDENCY_FINDINGS.md); an empty registry audit is not a security certification.
+- Python 3.14 quality gate: 86 tests passed, pip check passed, arithmetic/replay/document benchmark commands completed. Includes checkpoint collision, malformed observations, version compatibility, paired retrieval reproduction and original preservation checks.
+- Frontend: 37 tests passed; lint, TypeScript and production build passed. Browser verified failure → diagnosis → correction → successful comparison, invalid JSON recovery, a wrong correction remaining failed, and 390px phone comparison without page overflow. This is a bounded smoke check, not an accessibility certification.
+- Hosted old release: four-format upload previews, local DOCX word count, injected failure diagnosis, corrected replay, comparison export and original preservation were verified through the browser. The hosted code remains unchanged; see [broader QA](QA_OCT26.md).
+- **Dependency remediation:** owner-approved updates pin Next.js and eslint-config-next to 16.4.1 and update transitive Zod to 4.6.7. The post-update npm audit reports zero known vulnerabilities. All 37 frontend tests, lint, TypeScript and production build passed again. See [dependency findings](DEPENDENCY_FINDINGS.md); an empty registry audit is not a security certification.
 - Shared history, ephemeral free hosting, single-worker storage, unverified source metadata, exact-token retrieval and no robust question-answerability guarantee remain limitations. The local default returns source extracts or word counts, not general LLM answers.
 - No video recording was created; the screenshots and walkthrough are the demonstration deliverables.
 
-At the 26 October 08:00 IST check-in, confirm later laptop availability before scheduling more unattended work. Deadline: Wednesday 28 October 2026, 20:00 IST.
+The owner cancelled the 26 October 08:00 IST checkpoint boundary and authorized continued QA. Both completed/cancelled schedules have been deleted. Deadline: Wednesday 28 October 2026, 20:00 IST.
 
 
 ## Final local validation / review
 
-Latest code checks: 84 Python tests plus all quality-gate benchmarks; 32 frontend tests, lint, TypeScript and production build. Review against origin main found one Unicode normalization discrepancy between retrieval and correction suggestions; it was fixed with shared explicit normalization and regression cases. The Spec pass reported no actionable implementation gaps. This is a bounded review, not a full security audit.
+Latest code checks: 86 Python tests plus all quality-gate benchmarks; 37 frontend tests, lint, TypeScript and production build. Review against origin main found one Unicode normalization discrepancy between retrieval and correction suggestions; it was fixed with shared explicit normalization and regression cases. The Spec pass reported no actionable implementation gaps. This is a bounded review, not a full security audit.
 
-Draft integration PR: https://github.com/Yug-Shah17/BLACKBOX-AI/pull/1. Feature branches and integration are pushed. Main remains unchanged; no production deployment was requested or performed. The 26 October 08:00 IST coordinator checkpoint is active; the reset-continuation schedule was deleted after its successful wake to prevent duplicate runs. Approved existing-dependency patches are now included; main and production remain unchanged.
+Draft integration PR: https://github.com/Yug-Shah17/BLACKBOX-AI/pull/1. Feature branches and integration are pushed. Main remains unchanged; no production deployment was requested or performed. The owner cancelled the 08:00 IST checkpoint; it was deleted, as was the completed reset-continuation schedule. Approved existing-dependency patches are now included; main and production remain unchanged.
+
+## Additional review and QA
+
+A separately agent-authored frozen stress set and its paired results are documented in [Retrieval Review Protocol](RETRIEVAL_REVIEW_PROTOCOL.md). It exposes worse unsupported-question abstention in v3 despite better positive-query ranking. [Broader QA](QA_OCT26.md) records four-format uploads, parser error recovery, real local API outage/restart, hosted old-release replay/export, keyboard/mobile/theme checks and remaining limits.
