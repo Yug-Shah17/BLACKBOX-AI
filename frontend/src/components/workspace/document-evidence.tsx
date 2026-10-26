@@ -29,17 +29,27 @@ export function classifyRecordedOutput(
     return { kind: "legacy", label: "Recorded answer" };
   }
 
-  // 1. Check for provider-generated output first
+  // 1. Provider checks
   const model = generationStep?.inputData?.model;
-  const toolName = generationStep?.toolName;
   const isGeminiAgent = run?.agentName === "gemini-document-agent";
   const hasProviderModel = typeof model === "string" && model.trim().length > 0;
-  const hasProviderTool = typeof toolName === "string" && (toolName.toLowerCase().includes("gemini") || toolName.toLowerCase().includes("model"));
+  const toolName = generationStep?.toolName;
+  const isGeminiTool = typeof toolName === "string" && (toolName === "gemini-3.5-flash-lite" || toolName.startsWith("gemini-"));
   const hasAnswerEvidence = Boolean(generationStep?.inputData?.answerEvidence);
   const hasProviderError = Boolean(generationStep?.inputData?.providerError);
 
-  if (hasProviderModel || isGeminiAgent || hasProviderTool || hasAnswerEvidence || hasProviderError) {
-    const modelName = hasProviderModel ? String(model) : isGeminiAgent ? "Gemini" : "provider";
+  // If a providerError is recorded, provider call was attempted but did not generate successfully
+  if (hasProviderError) {
+    return {
+      kind: "none",
+      label: "Recorded answer",
+      explanation: "Provider call was attempted but recorded an error; output is not a successfully generated provider answer."
+    };
+  }
+
+  // A provider-generated answer requires explicit provider model/agent/tool metadata AND an evidence record or non-error generation
+  if (hasProviderModel || isGeminiAgent || isGeminiTool || hasAnswerEvidence) {
+    const modelName = hasProviderModel ? String(model) : isGeminiTool ? String(toolName) : isGeminiAgent ? "Gemini" : "provider";
     return {
       kind: "provider",
       label: "Provider-generated answer",
@@ -47,23 +57,22 @@ export function classifyRecordedOutput(
     };
   }
 
-  // 2. Check for word count output
+  // 2. Word count checks: require explicit operation === "word_count" in retrieval step or expectedAnswer matching
   const retrievalStep = run?.steps?.find(s => s.stepType === "retrieval");
   const isWordCountOp = retrievalStep?.inputData?.operation === "word_count";
   const expectedAnswer = typeof generationStep?.inputData?.expectedAnswer === "string"
     ? generationStep.inputData.expectedAnswer
     : null;
-  const isCountPattern = /^The word ["'].+?["'] appears \d+ times in the selected document/i.test(answer.trim());
+  const isCountText = /^The word ["'].+?["'] appears \d+ times in the selected document/i.test(answer.trim());
 
-  if ((expectedAnswer && answer === expectedAnswer) || isCountPattern) {
-    return {
-      kind: "word_count",
-      label: "Deterministic word count",
-      explanation: "Word count computed locally (case-insensitive, whole-word matches)."
-    };
-  }
-
-  if (isWordCountOp && !isCountPattern) {
+  if (isWordCountOp) {
+    if ((expectedAnswer && answer === expectedAnswer) || isCountText) {
+      return {
+        kind: "word_count",
+        label: "Deterministic word count",
+        explanation: "Word count computed locally (case-insensitive, whole-word matches)."
+      };
+    }
     return {
       kind: "unmatched",
       label: "Recorded answer",
@@ -71,7 +80,7 @@ export function classifyRecordedOutput(
     };
   }
 
-  // 3. Check for literal source extract
+  // 3. Literal source extract checks
   const inputDoc = generationStep?.inputData?.document as DemoDocument | undefined;
   const citation = typeof output?.citation === "string" ? output.citation : null;
   const contextDoc = citation ? context?.documents?.find(d => d.documentId === citation) : undefined;

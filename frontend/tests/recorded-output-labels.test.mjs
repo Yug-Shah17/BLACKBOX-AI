@@ -239,3 +239,134 @@ test("missing or legacy metadata does not crash or produce a false claim", () =>
   assert.equal(nullAnswerResult.kind, "none");
   assert.equal(nullAnswerResult.label, "Recorded answer");
 });
+
+test("arbitrary text matching count regex is NOT classified as word_count without word_count operation metadata", () => {
+  // An answer that looks like a count phrase, but the workflow/retrieval operation was standard retrieval, not word_count
+  const arbitraryText = 'The word "integrity" appears 3 times in the selected document according to common knowledge.';
+  const run = {
+    runId: "doc_test_not_count_op",
+    agentName: "local-document-agent",
+    source: "controlled-local-document-workflow",
+    steps: [
+      {
+        stepId: 1,
+        stepType: "retrieval",
+        status: "success",
+        executionMode: "executed",
+        inputData: { question: "What is the policy?" }, // NO operation: "word_count"
+        outputData: { documentIds: ["doc-policy"] }
+      },
+      {
+        stepId: 3,
+        stepType: "generation",
+        status: "success",
+        executionMode: "executed",
+        inputData: {
+          question: "What is the policy?",
+          document: mockDocument
+        },
+        outputData: {
+          answer: arbitraryText,
+          citation: "doc-returns"
+        }
+      }
+    ]
+  };
+
+  const result = classifyRecordedOutput(run, run.steps[1], { question: "What is the policy?", documents: [mockDocument] });
+  assert.notEqual(result.kind, "word_count");
+  assert.equal(result.label, "Recorded answer");
+});
+
+test("recorded providerError proves attempted call but is NOT labeled as successful provider generation", () => {
+  const run = {
+    runId: "doc_test_provider_error",
+    agentName: "gemini-document-agent",
+    source: "controlled-local-document-workflow",
+    steps: [
+      {
+        stepId: 3,
+        stepType: "generation",
+        status: "error",
+        executionMode: "executed",
+        inputData: {
+          model: "gemini-3.5-flash-lite",
+          question: "What is the return window?",
+          document: mockDocument,
+          providerError: { code: "QUOTA_EXCEEDED", message: "Free quota exhausted." }
+        },
+        outputData: {
+          answer: "Temporary error placeholder",
+          citation: "doc-returns"
+        }
+      }
+    ]
+  };
+
+  const result = classifyRecordedOutput(run, run.steps[0], { question: "What is the return window?", documents: [mockDocument] });
+  assert.notEqual(result.kind, "provider");
+  assert.equal(result.kind, "none");
+  assert.equal(result.label, "Recorded answer");
+  assert.match(result.explanation, /Provider call was attempted but recorded an error/);
+});
+
+test("replay comparison with literal replacement does not borrow original word_count metadata", () => {
+  // Scenario: Original was word_count operation, but replay replaced step 3 with a literal source extract
+  const originalRun = {
+    runId: "doc_orig_count",
+    agentName: "local-document-agent",
+    source: "controlled-local-document-workflow",
+    steps: [
+      {
+        stepId: 1,
+        stepType: "retrieval",
+        status: "success",
+        executionMode: "executed",
+        inputData: { question: 'How many times does "integrity" appear?', operation: "word_count" },
+        outputData: { documentIds: ["doc-returns"] }
+      },
+      {
+        stepId: 3,
+        stepType: "generation",
+        status: "success",
+        executionMode: "executed",
+        inputData: {
+          question: 'How many times does "integrity" appear?',
+          document: mockDocument,
+          expectedAnswer: 'The word "integrity" appears 0 times in the selected document'
+        },
+        outputData: {
+          answer: 'The word "integrity" appears 0 times in the selected document',
+          citation: "doc-returns"
+        }
+      }
+    ]
+  };
+
+  const replayStep = {
+    stepId: 3,
+    stepType: "generation",
+    status: "success",
+    executionMode: "executed", // Manually replaced step
+    outputData: {
+      answer: "Returns are accepted within 30 days of fictional purchase with receipt.",
+      citation: "doc-returns"
+    }
+  };
+
+  // When trace.tsx classifies the replay step using replay provenance without borrowing original word_count metadata
+  const replayRunContext = {
+    agentName: undefined, // executed replacement does not borrow agentName
+    source: originalRun.source,
+    steps: [
+      { stepId: 1, stepType: "retrieval", status: "success", executionMode: "reused" },
+      replayStep
+    ]
+  };
+
+  const result = classifyRecordedOutput(replayRunContext, replayStep, { question: "What is the policy?", documents: [mockDocument] });
+  assert.equal(result.kind, "source_extract");
+  assert.equal(result.label, "Literal source extract");
+  assert.match(result.explanation, /Matching source text does not establish whether the user's question was answered/);
+});
+
