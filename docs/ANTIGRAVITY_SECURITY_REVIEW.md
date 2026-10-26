@@ -1,9 +1,9 @@
 # Bounded Static Security Review
 
-**Date**: 26 October 2026  
-**Worktree**: `portfolio/antigravity-manual`  
-**Reviewed Commit (HEAD)**: `a954465d413e4f5441b63de4d0306b434602ca24`  
-**Comparison Base (`origin/main`)**: `0cebba76e175d1806ca64e90118f4e2dc8522819` (`merge-base`: `0cebba76e175d1806ca64e90118f4e2dc8522819`)  
+**Date**: 26 October 2026
+**Worktree**: `portfolio/antigravity-manual`
+**Reviewed Commit (HEAD)**: `a954465d413e4f5441b63de4d0306b434602ca24`
+**Comparison Base (`origin/main`)**: `0cebba76e175d1806ca64e90118f4e2dc8522819` (`merge-base`: `0cebba76e175d1806ca64e90118f4e2dc8522819`)
 **Scope**: Read-only, evidence-based bounded static code review focusing on integration changes across document upload/parsing, run/checkpoint persistence and replay, API validation/error responses, and public-demo/privacy configuration.
 
 ---
@@ -36,27 +36,19 @@ All inspection operations were strictly read-only:
 
 ## 2. Findings by Severity
 
-### Finding 1: Unsanitized Filename Reflected into Response and Search Topic (Low)
+### Observation 1: User-Controlled Filename Becomes Document Metadata (Informational)
 - **Files & Lines**:
   - `backend/app/routes/document_import.py:31-32`
   - `frontend/src/lib/document-upload.ts:44-45`
-- **Preconditions**: An attacker or demo user uploads a document with path traversal sequences, control characters, or HTML tags in the `filename` query parameter (e.g., `filename=../../etc/passwd.pdf` or `filename=<script>.pdf`).
-- **Realistic Impact**:
-  - `document_import.py` validates that `len(filename) <= 200` and `Path(filename).suffix.lower() in (".pdf", ".docx")`, but does not sanitize the filename via `Path(filename).name` or strip directory separators.
-  - While the file content is read into memory and not saved to disk using the filename (thus avoiding path traversal file write), the raw string is assigned directly to `title=filename` and interpolated into `topic=f"{Path(filename).stem} {text}"[:200]`.
-  - In `frontend/src/lib/document-upload.ts:44-45`, client-side fallback parsing similarly incorporates raw filenames into document topics.
-  - When displayed in the UI, React safely escapes JSX text, preventing stored XSS; however, if downstream loggers, exports, or third-party integrations consume `title` or `topic` without sanitization, directory traversal syntax or control characters could cause log injection or display spoofing.
-- **Remediation Direction**: Sanitize `filename` in `document_import.py` using `Path(filename).name.strip()` or standard secure filename utilities, and strip non-printable or path-separating characters before populating `title` and `topic`.
+- **Evidence**: The upload route validates suffix and length, then uses the supplied name as `title` and as part of `topic`; the browser fallback does likewise. The value is not used as a filesystem path. Displayed JSX text is escaped by React.
+- **Assessment**: No log, HTML, or other unsafe downstream sink was identified in this bounded review. The filename can affect retrieval metadata for a document the caller supplied, which is a data-quality concern, not a demonstrated security vulnerability. Normalizing display names may still improve consistency.
 
-### Finding 2: Denial of Service Risk via Process Slot Contention on Sequential Semaphore (Low)
+### Observation 2: Single Concurrent Parser Slot (Informational Availability Limit)
 - **Files & Lines**:
   - `backend/app/services/document_import.py:14, 80-86`
 - **Preconditions**: Multiple concurrent users or requests submit document extraction tasks (`/document-import`) simultaneously.
-- **Realistic Impact**:
-  - `backend/app/services/document_import.py` enforces extraction isolation with a strict non-blocking bounded semaphore: `PARSERS = threading.BoundedSemaphore(1)`.
-  - When `not PARSERS.acquire(blocking=False)`, the route immediately raises `BlockingIOError("Another document is being extracted. Please try again.")`, which returns HTTP 503 (`Retry-After: 1`).
-  - Because each extraction runs in a subprocess with a timeout of 15 seconds (`subprocess.run(..., timeout=15)`), a single long-running PDF extraction can block all other users from uploading documents for up to 15 seconds. In a multi-user public demo, repeated or intentionally heavy uploads can easily cause sustained denial of service for document parsing.
-- **Remediation Direction**: Increase the worker pool concurrency limit (e.g., 2–4 workers depending on CPU capacity), queue requests with a short bounded wait time rather than immediately failing with non-blocking rejection, or process document parsing asynchronously with rate limiting per client IP.
+- **Evidence**: `PARSERS` permits one extraction at a time. While occupied, another request receives HTTP 503 with `Retry-After: 1`; each subprocess has a 15-second timeout.
+- **Assessment**: This bounds parser concurrency and may reject legitimate simultaneous uploads. The static review does not establish sustained service denial or attacker reachability in the deployed environment. Treat this as an operational capacity limit; any change to concurrency should be load-tested rather than assumed safer.
 
 ### Finding 3: Windows Registry Lookup for API Key Fallback in Web Backend (Informational)
 - **Files & Lines**:
@@ -97,7 +89,7 @@ All inspection operations were strictly read-only:
 - **Temporary Files & State Corruption**:
   - Upload parsing uses purely in-memory buffers (`io.BytesIO`) and pipes over standard input (`input=data`). No temporary files are written to disk during document import.
   - Documents imported via `/document-import` are not saved directly into `RunStore`; they are returned as transient `Document` objects to the client. Persistence only occurs if and when a user submits a run via `POST /document-runs`.
-- **Verdict**: *No high or critical issues found. The parser isolation, XML defusing, and size bounding are robustly designed.* (Low-severity findings noted in Section 2).
+- **Verdict**: *No high or critical issues were identified in this bounded review. The parser uses a subprocess timeout and parser/input limits. No OS-level memory limit or hardened privilege/filesystem sandbox was identified in the reviewed code.*
 
 ### 2. Run Identity and Replay Integrity
 - **Identifier Collision Handling**:
@@ -134,7 +126,7 @@ All inspection operations were strictly read-only:
   - In `frontend/src/lib/api.ts:68-87`, HTTP errors from backend are parsed safely; server 500 errors display a friendly user notification rather than raw system internals.
 - **CORS & Proxy Assumptions**:
   - `backend/app/main.py:19-21` configures CORS middleware with `allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"]`.
-  - In Next.js (`frontend/next.config.ts:5-8`), browser traffic is proxied through `/api/blackbox/:path*` to `BACKEND_URL` (`http://127.0.0.1:8000` default), so external browser clients do not directly interact with the backend port in production deployments.
+  - In Next.js (`frontend/next.config.ts:5-8`), `/api/blackbox/:path*` is rewritten to `BACKEND_URL` (`http://127.0.0.1:8000` default). This is a routing configuration; it does not prove that a deployed backend is unreachable directly. CORS is a browser policy, not authentication or network access control. Deployment exposure is unknown from this source review.
 - **Trust Placed in Client-Supplied Identifiers**:
   - When diagnosing a run (`POST /diagnose` or `POST /document-runs/{run_id}/diagnose`), the server retrieves the verified recorded trace from the server's authoritative `RunStore` (`backend/app/routes/runs.py:24-42` and `backend/app/routes/documents.py:14-56`). Client modifications to run body parameters are ignored (`backend/tests/test_robustness.py:212-219`).
 - **Verdict**: *No issue found in this bounded static review.*
@@ -143,7 +135,7 @@ All inspection operations were strictly read-only:
 - **Persistence & Shared History**:
   - Runs and checkpoints are persisted to local JSON files (`state.json`) inside the backend data directory (`backend/app/services/store.py:29`).
   - In a public demo environment where multiple anonymous users access the same instance, all runs stored in `state.json` are returned by `GET /runs` and `GET /document-runs`. Any user who uploads a custom document with sensitive text will have that document stored in `state.json` and visible to any other demo visitor via `/document-runs/{run_id}/sources` or `/document-runs/{run_id}`.
-  - The UI explicitly warns the user of this limitation in `frontend/src/components/workspace/new-run-dialog.tsx:96`: *"Answers use the first current document. Google processes its text; free-tier data may be used to improve Google products. Use non-sensitive documents."*
+  - The workspace history UI warns: `frontend/src/components/workspace/runs.tsx:77`: *"Student portfolio demo. Hosted run history may be shared and temporary; download records you want to keep. Use fictional or non-sensitive documents."* The separate Gemini warning in `new-run-dialog.tsx:96` concerns Google's processing and free-tier data use, not shared local history.
 - **Retention & Ephemeral Scope**:
   - There is no automated TTL or background retention cleanup worker for `state.json`. Run records persist until the local file is manually reset or deleted.
 - **Third-Party Provider Calls & User Consent**:
@@ -152,12 +144,12 @@ All inspection operations were strictly read-only:
     if self.answeringMode == "gemini" and not self.allowExternalProcessing:
         raise ValueError("Explicit consent is required to send document text to Google")
     ```
-  - The UI forces explicit user interaction with a mandatory checkbox (`new-run-dialog.tsx:97`): *"I consent to sending the selected document and question to Google."*
+  - The UI presents a required checkbox (`new-run-dialog.tsx:97`), and the backend rejects requests whose `allowExternalProcessing` value is false. This is a client-controlled request field: a direct API caller can set it to true, so it is not identity-bound or technically non-bypassable consent. No authentication or identity-backed consent record was identified in this review.
   - In `backend/app/services/gemini.py:55-57`, external calls are made directly to `generativelanguage.googleapis.com` via standard HTTPS with `temperature: 0` and strict output JSON schemas. No paid fallback or unprompted secondary calls are made.
 - **Credential & Secret Protection**:
   - `backend/app/services/gemini.py:57` transmits the API key via standard HTTPS request headers (`x-goog-api-key`).
   - No credentials, tokens, or `.env` files are tracked in the repository (`.gitignore` protects `.env*`).
-- **Verdict**: *Confirmed that external provider calls require explicit opt-in consent and that credentials are not leaked. Public-demo multi-tenant data sharing is bounded by the demo scope and clearly documented.*
+- **Verdict**: *The UI provides a shared-history warning, and the backend has an explicit provider-processing request gate. Whether the backend is publicly reachable and how deployment storage is retained are not established by this source review.*
 
 ---
 
@@ -165,20 +157,20 @@ All inspection operations were strictly read-only:
 
 | ID | Title | Component | Severity | Realistic Impact | Remediation Direction |
 |---|---|---|---|---|---|
-| **SEC-01** | Unsanitized Filename Reflected into Response and Search Topic | `backend/app/routes/document_import.py:31-32`, `frontend/src/lib/document-upload.ts:44-45` | **Low** | Malicious filenames with directory traversal sequences or special characters populate `title` and `topic`, presenting log injection or display spoofing risks. | Sanitize input filenames with `Path(filename).name.strip()` and strip path separators. |
-| **SEC-02** | Process Slot Contention on Sequential Extraction Semaphore | `backend/app/services/document_import.py:14, 80-86` | **Low** | A single concurrent upload blocks the non-blocking semaphore, returning HTTP 503 to concurrent users and risking demo DoS. | Use a bounded worker pool or short queued wait times with rate-limiting. |
-| **SEC-03** | Windows Registry Query for Fallback API Key | `backend/app/services/gemini.py:26-38` | **Informational** | Reading `HKCU\Environment` introduces host user state dependency in server environments. | Standardize secret injection via container/process environment variables only. |
-| **SEC-04** | Single-Worker File-Locking Scope | `backend/app/services/store.py:31, 63-80` | **Informational** | Multi-worker deployments would encounter race conditions in `state.json` atomic replacement. | Retain single-worker constraint as documented, or migrate to a transactional database. |
+| **OBS-01** | User-Controlled Filename Metadata | `backend/app/routes/document_import.py:31-32`, `frontend/src/lib/document-upload.ts:44-45` | **Informational** | Filename affects the submitted document title/topic; no unsafe sink or filesystem path use was found. | Normalize for consistent display/retrieval if desired. |
+| **OBS-02** | Single Concurrent Parser Slot | `backend/app/services/document_import.py:14, 80-86` | **Informational** | Concurrent extraction requests can receive a retryable 503; deployed reachability and sustained impact are unknown. | Treat as a capacity constraint; measure before changing concurrency. |
+| **OBS-03** | Windows Registry Fallback for API Key | `backend/app/services/gemini.py:26-38` | **Informational** | On Windows, a missing process variable falls back to the current user's `HKCU\Environment`. | Keep deployment secret injection explicit if this backend is hosted on Windows. |
+| **OBS-04** | Single-Worker File-Locking Scope | `backend/app/services/store.py:31, 63-80` | **Informational** | The in-process `RLock` does not coordinate separate workers; this store is documented for one Uvicorn worker. | Keep one worker or use transactional shared storage before scaling. |
 
 ---
 
 ## 5. Conclusion & Verification
 
-This bounded static review confirms that the integration changes between `origin/main` and `HEAD` maintain high standards of defensiveness:
-- File uploads are strictly isolated in a separate, time-limited, memory-bounded subprocess with safe XML and PDF parsing configurations.
+This bounded static review did not confirm a high- or critical-severity vulnerability. It found operational observations that should not be presented as demonstrated attacks:
+- File extraction runs in a separate subprocess with a 15-second timeout and input/parser-specific bounds. The reviewed code does not set an OS-level memory limit or show a hardened process sandbox.
 - Run persistence uses atomic replace operations with explicit collision rejection for both runs and checkpoints.
 - Replays operate on immutable original records and enforce strict schema validation for all replacement actions.
-- External calls to Google Gemini require explicit, non-bypassable opt-in consent from the user and avoid leaking provider or credential details.
-- Identified findings are limited to low-severity filename sanitization and concurrency availability bounds, appropriate for a bounded student demo project.
+- The UI presents a required consent checkbox and the backend checks a client-supplied consent field before Gemini processing; this is not identity-bound consent.
+- Public deployment exposure, authentication, and actual hosting retention cannot be concluded from repository code alone. The UI warns that hosted history may be shared and temporary.
 
-The review is completed with zero application code mutations and full fidelity to repository constraints.
+The original Antigravity report recorded `git diff --check` as clean. Codex ran `git show --check` against the committed report and found trailing spaces in its metadata hard-break lines; this revision removes them. No application code was changed during either review.
