@@ -1,0 +1,67 @@
+{
+  "fixtureSha256": "b1d51439900845fdae907620664c5d7cff629d6b5ce98f4f8443deb52075f0b7",
+  "workflowVersion": "document-qa-v3",
+  "selectedThreshold": 0,
+  "grid": [
+    {
+      "threshold": 0,
+      "retainedCorrectPositives": 20,
+      "baselineCorrectPositives": 20,
+      "eligible": true,
+      "positiveQueries": 20,
+      "negativeQueries": 20,
+      "top1Hits": 20,
+      "mrr": 1.0,
+      "meanRecallAt3": 1.0,
+      "negativeAbstentions": 0
+    },
+    {
+      "threshold": 0.25,
+      "retainedCorrectPositives": 15,
+      "baselineCorrectPositives": 20,
+      "eligible": false,
+      "positiveQueries": 20,
+      "negativeQueries": 20,
+      "top1Hits": 15,
+      "mrr": 0.75,
+      "meanRecallAt3": 0.75,
+      "negativeAbstentions": 9
+    },
+    {
+      "threshold": 0.5,
+      "retainedCorrectPositives": 6,
+      "baselineCorrectPositives": 20,
+      "eligible": false,
+      "positiveQueries": 20,
+      "negativeQueries": 20,
+      "top1Hits": 6,
+      "mrr": 0.3,
+      "meanRecallAt3": 0.3,
+      "negativeAbstentions": 19
+    },
+    {
+      "threshold": 0.75,
+      "retainedCorrectPositives": 1,
+      "baselineCorrectPositives": 20,
+      "eligible": false,
+      "positiveQueries": 20,
+      "negativeQueries": 20,
+      "top1Hits": 1,
+      "mrr": 0.05,
+      "meanRecallAt3": 0.05,
+      "negativeAbstentions": 20
+    },
+    {
+      "threshold": 1,
+      "retainedCorrectPositives": 1,
+      "baselineCorrectPositives": 20,
+      "eligible": false,
+      "positiveQueries": 20,
+      "negativeQueries": 20,
+      "top1Hits": 1,
+      "mrr": 0.05,
+      "meanRecallAt3": 0.05,
+      "negativeAbstentions": 20
+    }
+  ]
+}
