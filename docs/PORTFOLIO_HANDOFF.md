@@ -1,6 +1,6 @@
 # Portfolio handoff — 26 October 2026
 
-Status: integrated and locally verified on `portfolio/integration`; review required before main merge or production deployment. The public demo still serves the previous release. No paid provider calls were made for this work. No dependencies were added or upgraded.
+Status: integrated and locally verified on `portfolio/integration`; review required before main merge or production deployment. The public demo still serves the previous release. No paid provider calls were made for this work. No new direct dependencies were added. Existing Next.js/ESLint configuration and the transitive Zod dependency were upgraded with owner approval.
 
 ## What changed
 
@@ -57,7 +57,7 @@ Do not describe these metrics as real-world accuracy, trained document ML, produ
 - Python 3.14 quality gate: 84 tests passed, pip check passed, arithmetic/replay/document benchmark commands completed. Includes checkpoint collision, malformed observations, version compatibility, paired retrieval reproduction and original preservation checks.
 - Frontend: 32 tests passed; lint, TypeScript and production build passed. Browser verified failure → diagnosis → correction → successful comparison, invalid JSON recovery, a wrong correction remaining failed, and 390px phone comparison without page overflow. This is a bounded smoke check, not an accessibility certification.
 - Hosted baseline: homepage renders; health/readiness and both run-list endpoints return HTTP 200. Complete hosted upload/answer/replay was not verified. The hosted code remains unchanged.
-- **Release blocker:** existing Next.js 16.3.8 is included in published critical advisory ranges. `npm audit` reports 1 critical and 4 high package entries. Updating existing versions is pending owner approval; manifests and lockfile remain unchanged. See [dependency findings](DEPENDENCY_FINDINGS.md).
+- **Dependency remediation:** owner-approved updates pin Next.js and eslint-config-next to 16.4.1 and update transitive Zod to 4.6.7. The post-update npm audit reports zero known vulnerabilities. All 32 frontend tests, lint, TypeScript and production build passed again. See [dependency findings](DEPENDENCY_FINDINGS.md); an empty registry audit is not a security certification.
 - Shared history, ephemeral free hosting, single-worker storage, unverified source metadata, exact-token retrieval and no robust question-answerability guarantee remain limitations. The local default returns source extracts or word counts, not general LLM answers.
 - No video recording was created; the screenshots and walkthrough are the demonstration deliverables.
 
@@ -68,4 +68,4 @@ At the 26 October 08:00 IST check-in, confirm later laptop availability before s
 
 Latest code checks: 84 Python tests plus all quality-gate benchmarks; 32 frontend tests, lint, TypeScript and production build. Review against origin main found one Unicode normalization discrepancy between retrieval and correction suggestions; it was fixed with shared explicit normalization and regression cases. The Spec pass reported no actionable implementation gaps. This is a bounded review, not a full security audit.
 
-Draft integration PR: https://github.com/Yug-Shah17/BLACKBOX-AI/pull/1. Feature branches and integration are pushed. Main remains unchanged; no production deployment was requested or performed. The 26 October 08:00 IST coordinator checkpoint is active; the reset-continuation schedule was deleted after its successful wake to prevent duplicate runs. Existing dependency updates remain pending owner approval.
+Draft integration PR: https://github.com/Yug-Shah17/BLACKBOX-AI/pull/1. Feature branches and integration are pushed. Main remains unchanged; no production deployment was requested or performed. The 26 October 08:00 IST coordinator checkpoint is active; the reset-continuation schedule was deleted after its successful wake to prevent duplicate runs. Approved existing-dependency patches are now included; main and production remain unchanged.

@@ -101,7 +101,7 @@ The arithmetic workflow remains useful for testing the tracing and replay infras
 
 | Layer | Implementation |
 |---|---|
-| Frontend | Next.js 16.3.8, React 19.2.8, TypeScript, Tailwind CSS 4, Lucide icons |
+| Frontend | Next.js 16.4.1, React 19.2.8, TypeScript, Tailwind CSS 4, Lucide icons |
 | Backend | Python, FastAPI, Pydantic, Uvicorn |
 | Optional answering | Backend-only Gemini integration with explicit document-sharing consent |
 | Document extraction | pypdf for text PDFs; bounded DOCX XML extraction |
@@ -216,7 +216,7 @@ Raw PDF/DOCX files are not saved by the extractor, but extracted source text is 
 
 ## Verification
 
-The October 26 integration adds a direct guided local failure demonstration, checkpoint-collision protection, corrupt-trace errors and a paired retrieval evaluation. See the [Portfolio Handoff](docs/PORTFOLIO_HANDOFF.md) for current checks, screenshots, a demonstration walkthrough, an interview explanation and an honest LinkedIn description. **The integration is not deployed; existing dependency advisories remain a release blocker pending review.**
+The October 26 integration adds a direct guided local failure demonstration, checkpoint-collision protection, corrupt-trace errors and a paired retrieval evaluation. See the [Portfolio Handoff](docs/PORTFOLIO_HANDOFF.md) for current checks, screenshots, a demonstration walkthrough, an interview explanation and an honest LinkedIn description. **The integration is not deployed. Approved dependency patches are included; the current npm audit reports zero known vulnerabilities.**
 
 The recorded **October 7, 2026** verification passed:
 
