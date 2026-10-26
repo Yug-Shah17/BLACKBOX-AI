@@ -23,20 +23,20 @@ The real implementation saves checkpoint snapshots around step execution before 
 
 | Step | Input and output | What can go wrong in the demo |
 |---|---|---|
-| Retrieve | Question and supplied documents → candidate IDs | No candidates or an irrelevant candidate |
-| Select | Candidate documents → one document ID | Archived or unsuitable source |
-| Produce | Question and selected text → answer and citation | Wrong count, unsupported text, provider error |
-| Validate | Recorded answer, source and evidence → passed/failed | Citation, quote or expected-output checks fail |
+| Retrieve (1) | Question and supplied documents → candidate IDs | No candidates or an irrelevant candidate |
+| Select (2) | Candidate documents → one document ID | Archived or unsuitable source |
+| Compose (3) | Question and selected text → answer and citation | Wrong count, unsupported text, provider error |
+| Validate (4) | Recorded answer, source and evidence → passed/failed | Citation, quote or expected-output checks fail |
 
 In local mode, ordinary questions return a source extract. Explicit single-word frequency questions compute a count. Optional Gemini answering is a separate path requiring consent; the recent QA used local mode and made no paid provider calls. A matching extract can be perfectly copied yet fail to answer the question.
 
 ## Explain a replay accurately
 
-A checkpoint contains the saved configuration, accumulated state and earlier steps. Replaying at step3 reuses steps1–2, substitutes a reviewed answer/citation, and executes the remaining validation. The system creates a new run ID and new checkpoint IDs. It does not edit the original to make the demonstration look successful.
+A checkpoint contains the saved configuration, accumulated state and earlier steps. Replaying at step 3 reuses steps 1–2, substitutes a reviewed answer/citation, and executes the remaining validation. The system creates a new run ID and new checkpoint IDs. It does not edit the original to make the demonstration look successful.
 
 A replay from an earlier step can re-execute more of the workflow. “Executed” alone does not prove an external model was called: a manual replacement is also an executed step. This is why the new output labels inspect recorded response evidence rather than trusting the agent/model name.
 
-The backend checks that restored configuration, prefix and state agree with the recorded original. Inconsistent saved observations return409; malformed replacement content can return422; a storage failure returns503. Run/checkpoint collision guards prevent an existing identifier from being overwritten. Atomic local writes and a process lock support the single-worker demo; they are not a distributed database or a guarantee against every power-loss scenario.
+The backend checks that restored configuration, prefix and state agree with the recorded original. Inconsistent saved observations return 409; malformed replacement content can return 422; a storage failure returns 503. Run/checkpoint collision guards prevent an existing identifier from being overwritten. Atomic local writes and a process lock support the single-worker demo; they are not a distributed database or a guarantee against every power-loss scenario.
 
 ## Read labels and metrics without overstating them
 
@@ -46,13 +46,13 @@ The backend checks that restored configuration, prefix and state agree with the 
 | Recorded word count | The output matches the locally computed expected count saved in this run. |
 | Provider-generated answer | Matching recorded response evidence backs the output; this does not prove semantic truth. |
 | Successful | This workflow's bounded checks passed; it is not a general accuracy score. |
-| Diagnosis points to step3 | Rules found evidence of a likely origin; they did not establish causal proof. |
-| Top1 source selection | The first current source agrees with the fixture's relevance labels. |
-| MRR | Average reciprocal rank of the first relevant source; first earns1, second earns1/2. |
+| Diagnosis points to step 3 | Rules found evidence of a likely origin; they did not establish causal proof. |
+| Top-1 source selection | The first current source agrees with the fixture's relevance labels. |
+| MRR | Average reciprocal rank of the first relevant source; first earns 1, second earns 1/2. |
 | Recall@3 | Fraction of labeled relevant sources appearing in the first three candidates, averaged over positive queries. |
 | Unsupported abstention | The retriever returned no source for a query labeled unsupported. |
 
-The original synthetic retrieval result was4/17→15/17 top1. A separately frozen synthetic review was7/12→12/12, but unsupported abstention became worse:3/4→0/4. Keep those sets separate. Neither measures generated-answer accuracy. The later abstention study failed its acceptance rule and did not change runtime behavior; its apparent20/20 source agreement also includes a disclosed debatable relevance label.
+The original synthetic retrieval result was 4/17 → 15/17 top-1. A separately frozen synthetic review was 7/12 → 12/12, but unsupported abstention became worse: 3/4 → 0/4. Keep those sets separate. Neither measures generated-answer accuracy. The later abstention study failed its acceptance rule and did not change runtime behavior; its apparent 20/20 source agreement also includes a disclosed debatable relevance label.
 
 There are two distinct forms of diagnosis in this project. Document diagnosis uses rules. The arithmetic experiment trains logistic regression on hand-engineered trace-consistency features and synthetic cases. Its perfect synthetic scores do not establish real-world generalization, calibrated confidence or an advantage over the reported domain-rule baseline. Do not describe the document retriever as a trained language model.
 

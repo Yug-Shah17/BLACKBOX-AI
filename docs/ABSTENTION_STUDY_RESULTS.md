@@ -1,20 +1,20 @@
 # Lexical abstention study: rejected candidate
 
-This offline experiment did **not** meet its pre-registered acceptance criteria. No product retrieval behavior changed. A threshold that retained at least95% of correctly retrieved calibration positives could not improve abstention: calibration selected threshold0, meaning no filtering.
+This offline experiment did **not** meet its pre-registered acceptance criteria. No product retrieval behavior changed. A threshold that retained at least 95% of correctly retrieved calibration positives could not improve abstention: calibration selected threshold 0, meaning no filtering.
 
 ## Frozen protocol and provenance
 
 - Plan: d5f5ff6, before corpus/evaluation.
-- Corpus:2fb55ce, before any scores. Separate agent authored 8 fictional sources and40 questions per split:20 supported,10 incidental-overlap negatives,10 topical missing-detail negatives. Documents/topics are disjoint between calibration and holdout. This is agent-authored synthetic data, not human annotation, semantic answer validation or evidence of real-world accuracy.
-- Algorithm and selected threshold:6f8b342, committed before the first holdout score. No threshold retuning or query rewriting followed the holdout.
+- Corpus: 2fb55ce, before any scores. Separate agent authored 8 fictional sources and 40 questions per split: 20 supported, 10 incidental-overlap negatives, 10 topical missing-detail negatives. Documents/topics are disjoint between calibration and holdout. This is agent-authored synthetic data, not human annotation, semantic answer validation or evidence of real-world accuracy.
+- Algorithm and selected threshold: 6f8b342, committed before the first holdout score. No threshold retuning or query rewriting followed the holdout.
 - Fixture SHA256: `b1d51439900845fdae907620664c5d7cff629d6b5ce98f4f8443deb52075f0b7`.
-- Original development/review fixtures and v2/v3 reports remain unchanged. The earlier v3 review's unsupported abstention0/4 remains valid for that separate set; denominators must not be pooled into an accuracy claim.
+- Original development/review fixtures and v2/v3 reports remain unchanged. The earlier v3 review's unsupported abstention 0/4 remains valid for that separate set; denominators must not be pooled into an accuracy claim.
 
 The gate uses the fraction of distinct normalized content-query tokens covered by the top current source, weighted by document-collection IDF. It retains v3 ranking when coverage meets the threshold, otherwise abstains completely. IDF=1+ln((N+1)/(df+1)); normalization and stopwords are existing v3 behavior. It tests lexical overlap, not whether text actually answers a question. See ABSTENTION_STUDY_PLAN.md for the full formula and acceptance rule.
 
 ## Calibration tradeoff
 
-| Threshold | Retained v3-correct positives /20 | Unsupported abstentions /20 | Eligible (>=95% retention) |
+| Threshold | Retained v3-correct positives / 20 | Unsupported abstentions / 20 | Eligible (>=95% retention) |
 |---|---:|---:|---|
 | 0 | 20 | 0 | Yes |
 | 0.25 | 15 | 9 | No |
@@ -22,17 +22,17 @@ The gate uses the fraction of distinct normalized content-query tokens covered b
 | 0.75 | 1 | 20 | No |
 | 1 | 1 | 20 | No |
 
-Threshold0.25 rejected9 unsupported questions but also lost5 supported questions; threshold0.5 rejected19 unsupported questions but lost14 supported questions. These are calibration outcomes, not tested alternative holdout claims. Selecting an aggressive threshold would hide positive retrieval regressions. The predetermined selection rule chose0.
+Threshold 0.25 rejected 9 unsupported questions but also lost 5 supported questions; threshold 0.5 rejected 19 unsupported questions but lost 14 supported questions. These are calibration outcomes, not tested alternative holdout claims. Selecting an aggressive threshold would hide positive retrieval regressions. The predetermined selection rule chose 0.
 
 ## Holdout, evaluated after selection freeze
 
-| Measure | v3 baseline | Selected gate (threshold0) |
+| Measure | v3 baseline | Selected gate (threshold 0) |
 |---|---:|---:|
-| Supported top1 |20/20|20/20|
-| MRR |1.000|1.000|
-| Mean Recall@3 |0.975|0.975|
-| Unsupported abstention |1/20|1/20|
-| Retention of baseline-correct positives |—|20/20|
+| Supported top-1 | 20/20 | 20/20 |
+| MRR | 1.000 | 1.000 |
+| Mean Recall@3 | 0.975 | 0.975 |
+| Unsupported abstention | 1/20 | 1/20 |
+| Retention of baseline-correct positives | — | 20/20 |
 
 Acceptance: **failed** because unsupported abstention did not strictly improve. Baseline/candidate predictions are identical. No runtime adoption, new workflow version, frontend parity change, dependency or provider call is part of this study.
 
@@ -44,7 +44,7 @@ An independent code/data review found one debatable positive label: `hold-p2`, �
 
 ## Every holdout failure
 
-All19 failures are unsupported queries that still retrieve a source; no supported top1 loss occurred. Full rankings and coverage are saved in ml/abstention_study_holdout.json. No failures were removed or tuned away.
+All 19 failures are unsupported queries that still retrieve a source; no supported top-1 loss occurred. Full rankings and coverage are saved in ml/abstention_study_holdout.json. No failures were removed or tuned away.
 
 | Query | Category | Question | First retrieved source | Coverage |
 |---|---|---|---|---:|
