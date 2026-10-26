@@ -20,9 +20,23 @@ test("plain backend errors retain their actionable message", async context => {
   });
 });
 
-test("non-JSON proxy failures retain an HTTP status fallback", async context => {
-  context.mock.method(globalThis, "fetch", async () => new Response("Unavailable", { status: 502 }));
-  await assert.rejects(api("/document-runs"), { message: "Request failed (502)" });
+test("non-JSON server failures explain recovery and retain the HTTP status", async context => {
+  for (const status of [500, 502, 503]) {
+    context.mock.method(globalThis, "fetch", async () => new Response("Unavailable", { status }));
+    await assert.rejects(api("/document-runs"), {
+      message: `The demo service could not complete this request (HTTP ${status}). Wait a moment, then try again; the free backend may need time to wake up.`,
+    });
+  }
+});
+
+test("explicit server detail takes priority over the generic recovery message", async context => {
+  context.mock.method(globalThis, "fetch", async () => new Response(JSON.stringify({ detail: "Run storage is temporarily unavailable" }), { status: 503 }));
+  await assert.rejects(api("/document-runs"), { message: "Run storage is temporarily unavailable" });
+});
+
+test("non-JSON not-found responses retain their original status fallback", async context => {
+  context.mock.method(globalThis, "fetch", async () => new Response("Not found", { status: 404 }));
+  await assert.rejects(api("/document-runs/missing"), { message: "Request failed (404)" });
 });
 
 test("network failures give a recovery action without leaking request data", async context => {

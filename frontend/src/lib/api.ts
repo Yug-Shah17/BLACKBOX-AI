@@ -63,7 +63,9 @@ export async function api<T>(path: string, body?: unknown, signal?: AbortSignal)
     throw new Error("Could not reach the local service. Check that Black Box is running, then try again.", { cause: error });
   }
   if (!response.ok) {
-    let detail = `Request failed (${response.status})`;
+    let detail = response.status >= 500
+      ? `The demo service could not complete this request (HTTP ${response.status}). Wait a moment, then try again; the free backend may need time to wake up.`
+      : `Request failed (${response.status})`;
     try {
       const data = await response.json();
       if (typeof data.detail === "string") detail = data.detail;
