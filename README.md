@@ -304,7 +304,7 @@ Root `requirements.txt` is the canonical Python dependency list. Runtime history
 
 ## Author
 
-**Yug Shah** - independent student project.
+**Yug Shah**
 
 [GitHub](https://github.com/Yug-Shah17) | [LinkedIn](https://www.linkedin.com/in/yug-shah-lnkdn/)
 
