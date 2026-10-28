@@ -12,8 +12,8 @@ def main():
         raise SystemExit("Model missing. Run python -m ml.generate_dataset then python -m ml.train_model.")
     commands = [
         ["-m", "pip", "check"],
-        ["-B", "-m", "unittest", "ml.test_pipeline", "ml.test_evaluation",
-         "backend.tests.test_api", "backend.tests.test_robustness", "backend.tests.test_documents", "backend.tests.test_gemini_documents", "backend.tests.test_document_import", "backend.tests.test_student_demo"],
+        ["-B", "-m", "unittest", "ml.test_pipeline", "ml.test_evaluation", "ml.test_abstention_study",
+         "backend.tests.test_api", "backend.tests.test_robustness", "backend.tests.test_documents", "backend.tests.test_gemini_documents", "backend.tests.test_document_import", "backend.tests.test_student_demo", "backend.tests.test_retrieval"],
         ["-B", "-m", "ml.evaluate_model"],
         ["-B", "scripts/replay_benchmark.py"],
         ["-B", "scripts/document_benchmark.py"],

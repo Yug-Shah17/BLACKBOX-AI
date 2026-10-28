@@ -61,6 +61,21 @@ class DocumentTests(unittest.TestCase):
         self.assertEqual(replay.status_code, 201)
         self.assertEqual(self.client.get(f"/document-runs/{replay.json()['replayRunId']}").json()["schemaVersion"], "document-qa-v1")
 
+    def test_previous_version_remains_readable_and_replayable(self):
+        from backend.app.services import documents
+        config = documents.DocumentRequest().model_dump()
+        record, checkpoints = documents.execute(config, version=documents.PREVIOUS_VERSION)
+        self.client.app.state.document_store.save(record, checkpoints)
+        url = f"/document-runs/{record['public']['runId']}"
+        self.assertEqual(self.client.get(url).status_code, 200)
+        before = self.client.get(url).json()
+        replay = self.client.post(f"{url}/replay", json={"checkpointStep": 3,
+            "alternativeAction": {"type": "replace_output", "output": record["public"]["steps"][2]["outputData"]}})
+        self.assertEqual(replay.status_code, 201)
+        branch = self.client.get(f"/document-runs/{replay.json()['replayRunId']}").json()
+        self.assertEqual(branch["schemaVersion"], documents.PREVIOUS_VERSION)
+        self.assertEqual(self.client.get(url).json(), before)
+
     def test_uploaded_sources_record_replay_and_preserve_original(self):
         sources = [
             {"documentId": "upload-old", "title": "archive.md", "topic": "returns policy",

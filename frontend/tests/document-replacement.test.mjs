@@ -61,3 +61,49 @@ test("hosted QA retrieves supplied documents and suggests a literal evidence quo
   assert.deepEqual(documentReplacement(hosted, 1, context), { documentIds: ["policy-old", "policy", "notice"] });
   assert.deepEqual(documentReplacement(hosted, 3, context), { answer: "Closed Sunday", citation: "notice" });
 });
+
+test("v3 retrieval ranks title and body evidence with stable ties and excludes stopwords", () => {
+  const sources = [
+    { documentId: "body", title: "Notice", topic: "general", text: "Scholarship applications open Monday.", current: true },
+    { documentId: "title", title: "Scholarship", topic: "general", text: "Apply Friday.", current: true },
+    { documentId: "tie", title: "Scholarship", topic: "general", text: "Apply Tuesday.", current: false },
+    { documentId: "noise", title: "What is the", topic: "general", text: "What is the", current: true },
+  ];
+  const v3 = { ...run, schemaVersion: "document-qa-v3" };
+  assert.deepEqual(documentReplacement(v3, 1, { question: "What is the scholarship?", documents: sources }), { documentIds: ["title", "tie", "body"] });
+  assert.deepEqual(documentReplacement(v3, 1, { question: "What is the?", documents: sources }), { documentIds: [] });
+  for (const schemaVersion of [undefined, "document-qa-v1", "document-qa-v2"]) {
+    assert.deepEqual(documentReplacement({ ...run, schemaVersion }, 1, { question: "Scholarship?", documents: sources }), { documentIds: [] });
+  }
+});
+
+test("v3 selection follows recorded retrieval order even when context is reordered", () => {
+  const v3 = structuredClone(run);
+  v3.schemaVersion = "document-qa-v3";
+  v3.steps[0].outputData.documentIds = ["policy-old", "notice", "policy"];
+  assert.deepEqual(documentReplacement(v3, 2, context), { documentId: "notice" });
+  v3.steps[0].outputData.documentIds = [];
+  assert.deepEqual(documentReplacement(v3, 2, context), { documentId: "" });
+});
+
+test("v3 count and supplied-document operations preserve input order", () => {
+  for (const operation of ["word_count", "provided_documents"]) {
+    const v3 = structuredClone(run);
+    v3.schemaVersion = "document-qa-v3";
+    v3.steps[0].inputData.operation = operation;
+    assert.deepEqual(documentReplacement(v3, 1, context), { documentIds: ["policy-old", "policy", "notice"] });
+  }
+});
+
+test("v3 retrieval normalizes compatibility letters and common letter equivalences", () => {
+  const sources = [
+    { documentId: "office", title: "oﬃce", topic: "general", text: "Details", current: true },
+    { documentId: "fullwidth", title: "ＯＦＦＩＣＥ", topic: "general", text: "Details", current: true },
+    { documentId: "street", title: "Straße", topic: "general", text: "Details", current: true },
+    { documentId: "sigma", title: "ος", topic: "general", text: "Details", current: true },
+  ];
+  const v3 = { ...run, schemaVersion: "document-qa-v3" };
+  assert.deepEqual(documentReplacement(v3, 1, { question: "office", documents: sources }), { documentIds: ["office", "fullwidth"] });
+  assert.deepEqual(documentReplacement(v3, 1, { question: "STRASSE", documents: sources }), { documentIds: ["street"] });
+  assert.deepEqual(documentReplacement(v3, 1, { question: "οσ", documents: sources }), { documentIds: ["sigma"] });
+});

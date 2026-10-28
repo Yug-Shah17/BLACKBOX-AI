@@ -6,6 +6,7 @@ import math
 import os
 import tempfile
 import threading
+from contextlib import suppress
 from pathlib import Path
 
 from backend.app.schemas import AgentRun
@@ -73,8 +74,9 @@ class RunStore:
         except (OSError, ValueError) as error:
             raise StorageError("Could not persist run data") from error
         finally:
-            if temporary is not None and temporary.exists():
-                temporary.unlink(missing_ok=True)
+            if temporary is not None:
+                with suppress(OSError):
+                    temporary.unlink(missing_ok=True)
 
     def list_runs(self):
         with self.lock:
@@ -96,6 +98,8 @@ class RunStore:
             identifier = record["public"]["runId"]
             if identifier in state["runs"]:
                 raise StorageError("Run identifier already exists")
+            if state["checkpoints"].keys() & checkpoints.keys():
+                raise StorageError("Checkpoint identifier already exists")
             state["runs"][identifier] = copy.deepcopy(record)
             state["checkpoints"].update(copy.deepcopy(checkpoints))
             self._write(state)

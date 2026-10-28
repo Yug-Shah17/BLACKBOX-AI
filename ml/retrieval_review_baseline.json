@@ -1,0 +1,258 @@
+{
+  "workflowVersion": "document-qa-v2",
+  "summary": {
+    "all": {
+      "answerableQueries": 12,
+      "negativeQueries": 4,
+      "top1Hits": 7,
+      "mrr": 0.5833,
+      "meanRecallAt3": 0.5417,
+      "correctAbstentions": 3
+    },
+    "review": {
+      "answerableQueries": 12,
+      "negativeQueries": 4,
+      "top1Hits": 7,
+      "mrr": 0.5833,
+      "meanRecallAt3": 0.5417,
+      "correctAbstentions": 3
+    }
+  },
+  "queries": [
+    {
+      "id": "review-01",
+      "question": "For a current Alder Parcel damaged delivery, how long do I have to submit the claim, and which three photographs are needed?",
+      "relevant": [
+        "parcel-current"
+      ],
+      "split": "review",
+      "retrieved": [
+        "parcel-current"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-02",
+      "question": "Did Alder's damage-report rules change on 15 March 2026, and what reporting window applies now?",
+      "relevant": [
+        "parcel-current"
+      ],
+      "split": "review",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": 0.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-03",
+      "question": "My Mere Library locker email arrived Friday. Does the 72-hour pickup code clock include the weekend?",
+      "relevant": [
+        "library-locker"
+      ],
+      "split": "review",
+      "retrieved": [
+        "library-locker"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-04",
+      "question": "Can I get another two days to retrieve a reserved library book, and must I ask before the original code runs out?",
+      "relevant": [
+        "library-locker"
+      ],
+      "split": "review",
+      "retrieved": [
+        "library-locker"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-05",
+      "question": "How do I stop Juniper's text alerts but keep appointment emails, and will that cancel my booking?",
+      "relevant": [
+        "clinic-reminders"
+      ],
+      "split": "review",
+      "retrieved": [
+        "clinic-reminders"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-06",
+      "question": "I need to cancel a Juniper appointment. Can I reply to the automated reminder or should I call?",
+      "relevant": [
+        "clinic-reminders"
+      ],
+      "split": "review",
+      "retrieved": [
+        "clinic-reminders"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-07",
+      "question": "At Foundry Rooms, can my guest use the fabrication workshop if I stay with them?",
+      "relevant": [
+        "coworking-guests"
+      ],
+      "split": "review",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": 0.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-08",
+      "question": "Does a North Quay Museum member's free guest admission cover a separately ticketed temporary exhibition?",
+      "relevant": [
+        "museum-visits"
+      ],
+      "split": "review",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": 0.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-09",
+      "question": "Where can a member bring two guests free of an extra general entry charge on weekdays between 09:00 and 18:00 while staying with them?",
+      "relevant": [
+        "coworking-guests",
+        "museum-visits"
+      ],
+      "split": "review",
+      "retrieved": [
+        "coworking-guests",
+        "museum-visits"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-10",
+      "question": "Which place normally requires visitors to attend a public event for weekend guest access without ordinary visitor admission?",
+      "relevant": [
+        "coworking-guests",
+        "museum-visits"
+      ],
+      "split": "review",
+      "retrieved": [
+        "museum-visits"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 0.5,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-11",
+      "question": "Can I put a Bramble loan batery in the key box after closing, or do I need to arrange a late return by phone?",
+      "relevant": [
+        "bike-battery"
+      ],
+      "split": "review",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": 0.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-12",
+      "question": "How does Cedar Pantry avoid charging me for my own jar, and is a damp container acceptable?",
+      "relevant": [
+        "pantry-refill"
+      ],
+      "split": "review",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": 0.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "review-13",
+      "question": "What is the maximum compensation Alder Parcel will pay for a damaged item?",
+      "relevant": [],
+      "split": "review",
+      "retrieved": [
+        "parcel-current"
+      ],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": null,
+      "correctAbstention": false
+    },
+    {
+      "id": "review-14",
+      "question": "How many hours does a Bramble Bikes spare battery take to charge fully?",
+      "relevant": [],
+      "split": "review",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": null,
+      "correctAbstention": true
+    },
+    {
+      "id": "review-15",
+      "question": "What is the password reset procedure for the fictional Harbor payroll portal?",
+      "relevant": [],
+      "split": "review",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": null,
+      "correctAbstention": true
+    },
+    {
+      "id": "review-16",
+      "question": "Which bus route runs from Westbridge station to the airport after midnight?",
+      "relevant": [],
+      "split": "review",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": null,
+      "correctAbstention": true
+    }
+  ]
+}

@@ -22,6 +22,7 @@ export interface DocumentMetrics {
     correctedOutcome: string; wrongCorrectionOutcome: string; originalPreserved: boolean }[];
 }
 export interface RecordedRun {
+  schemaVersion?: string;
   runId: string; task: string; agentName: string; outcome: string; timestamp: string;
   durationMs: number; steps: RecordedStep[]; source: string; parentRunId?: string | null;
   replayCheckpointStep?: number | null;
@@ -53,16 +54,24 @@ export interface MeasuredMetrics {
 }
 export async function api<T>(path: string, body?: unknown, signal?: AbortSignal): Promise<T> {
   const payload = body === undefined ? undefined : JSON.stringify(body);
+  const deadline = AbortSignal.timeout(90_000);
+  const requestSignal = signal ? AbortSignal.any([signal, deadline]) : deadline;
+  const rethrowCancellation = (error: unknown): never => {
+    if (!signal?.aborted && deadline.aborted) throw new Error("Black Box took too long to respond. Refresh run history before retrying; a submitted run may still have been saved.", { cause: error });
+    throw error;
+  };
   let response: Response;
   try {
-    response = await fetch(`/api/blackbox${path}`, { method: body === undefined ? "GET" : "POST", cache: "no-store", signal,
+    response = await fetch(`/api/blackbox${path}`, { method: body === undefined ? "GET" : "POST", cache: "no-store", signal: requestSignal,
       headers: body === undefined ? undefined : { "Content-Type": "application/json" }, body: payload });
   } catch (error) {
-    if (signal?.aborted || (error instanceof Error && error.name === "AbortError")) throw error;
-    throw new Error("Could not reach the local service. Check that Black Box is running, then try again.", { cause: error });
+    if (signal?.aborted || deadline.aborted || (error instanceof Error && error.name === "AbortError")) rethrowCancellation(error);
+    throw new Error("Could not reach Black Box. Check your connection and that the demo service is available, then try again.", { cause: error });
   }
   if (!response.ok) {
-    let detail = `Request failed (${response.status})`;
+    let detail = response.status >= 500
+      ? `The demo service could not complete this request (HTTP ${response.status}). Wait a moment, then try again; the free backend may need time to wake up.`
+      : `Request failed (${response.status})`;
     try {
       const data = await response.json();
       if (typeof data.detail === "string") detail = data.detail;
@@ -75,10 +84,21 @@ export async function api<T>(path: string, body?: unknown, signal?: AbortSignal)
         });
         if (messages.length) detail = messages.slice(0, 3).join("; ") + (messages.length > 3 ? ` (+${messages.length - 3} more)` : "");
       }
-    } catch { /* Proxy errors may not be JSON. */ }
+    } catch (error) {
+      if (signal?.aborted || deadline.aborted) rethrowCancellation(error);
+    }
     throw new Error(detail);
   }
-  return response.json();
+  return response.json().catch(rethrowCancellation);
+}
+export async function startGuidedDemo(): Promise<RecordedRun> {
+  const scenarios = await api<DocumentScenario[]>("/document-scenarios");
+  const scenario = scenarios.find(item => item.id === "registration") ?? scenarios[0];
+  if (!scenario?.documents.length || !scenario.question.trim()) throw new Error("The fictional demo documents are unavailable. Try again or create a custom run.");
+  return api<RecordedRun>("/document-runs", {
+    question: scenario.question, documents: scenario.documents,
+    failureType: "unsupported_answer", answeringMode: "local", allowExternalProcessing: false,
+  });
 }
 export function isDocumentRun(id: string) { return id.startsWith("doc_"); }
 export function runBase(id: string) { return isDocumentRun(id) ? "/document-runs" : "/runs"; }

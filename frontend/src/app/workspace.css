@@ -190,4 +190,8 @@ button { user-select:none; }
   .nav-item.active:hover { background:var(--accent-soft); }
   .button.primary:hover { background:var(--accent); filter:none; }
 }
+.demo-guide { padding:18px 20px; margin:18px 0; border:1px solid var(--border); border-radius:8px; background:var(--accent-soft); }
+.demo-guide h2 { margin:0 0 8px; font-size:15px; }
+.demo-guide p { margin:0 0 8px; font-size:13px; line-height:1.6; }
+.demo-guide small { color:var(--text-secondary); line-height:1.5; }
 @media(prefers-reduced-motion:reduce) { *,*:before,*:after { transition:none!important; animation:none!important; scroll-behavior:auto!important; } }

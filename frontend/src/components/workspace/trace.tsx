@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Braces, Calculator, Check, CheckCh
 import { api, DocumentContext, duration, exportFile, isDocumentRun, RecordedRun, ReplayOutcome, runBase, RunDiagnosis, runTitle, shortId, TraceDiff } from "@/lib/api";
 import { FileText } from "lucide-react";
 import { runReport } from "@/lib/run-report";
-import { DocumentEvidence } from "./document-evidence";
+import { classifyRecordedOutput, DocumentEvidence } from "./document-evidence";
 import { documentReplacement } from "@/lib/document-replacement";
 import { DownloadButton, ErrorNotice, JsonBlock, Loading, Status } from "./primitives";
 import { WorkspaceTabs } from "./tabs";
@@ -122,6 +122,11 @@ export default function TraceWorkspace({ runId }: { runId: string }) {
     <Link href="/runs" className="back-link"><ArrowLeft size={14} />Execution runs</Link>
     <div className="page-heading trace-heading"><div><h1>{runTitle(run)}</h1><div className="trace-run-line"><span className="mono">RUN / {shortId(runId)}</span><Status value={run.outcome} />{run.parentRunId && <span className="quiet-label"><GitBranch size={12} />Replay branch</span>}</div><p className="page-subtitle">{run.agentName}<span className="subtle-dot" />{new Date(run.timestamp).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}<span className="subtle-dot" />{duration(run.durationMs)}</p></div><div className="heading-actions"><DownloadButton value={run} name={`${shortId(runId)}.json`} /><button className="button primary" disabled={!supportsReplay} onClick={() => { chooseStep(suspected || 3); setTab("replay"); }}><RotateCcw size={15} />Replay run</button></div></div>
     <div className="trace-meta"><span><span className="meta-label">WORKFLOW</span>{documentWorkflow ? "Document QA" : "Arithmetic demo"}</span><span><span className="meta-label">STEPS</span>{run.steps.length} recorded</span><span><span className="meta-label">SOURCE</span>{supportsReplay ? "Controlled execution" : "Legacy fixture"}</span><span><span className="meta-label">MODEL</span>{documentWorkflow ? typeof answerModel === "string" ? answerModel : "Local deterministic" : diagnosis?.modelVersion || "Unavailable"}</span><button type="button" className="icon-button" aria-label="Download run report" title="Download run report" onClick={() => exportFile(new Blob([runReport(run, diagnosis, diff)], { type: "text/plain;charset=utf-8" }), `${shortId(runId)}-report.txt`)}><FileText size={16} /></button></div>
+    {documentWorkflow && <section className="demo-guide" aria-label="Investigation guide">
+      <h2>Failure → diagnosis → correction → comparison</h2>
+      <p>{tab === "overview" ? "1. Compare the recorded answer with its source. 2. Read the evidence diagnosis below; its rules flag a likely origin, not a proven cause." : tab === "replay" ? "3. Review the suggested replacement against the source, then execute a new branch. A suggestion can still fail validation; the original stays available." : "4. Check both outcomes and the changed answer below. A passing evidence check applies to this controlled workflow only."}</p>
+      <small>Local mode uses source extracts or word counts. Document diagnosis uses rules; simulated faults demonstrate the workflow.</small>
+    </section>}
     <WorkspaceTabs label="Trace views" value={tab} onChange={setTab} items={[{ id: "overview", label: "Trace overview", icon: <ScanLine size={14} /> }, { id: "replay", label: "Checkpoint replay", icon: <RotateCcw size={14} /> }, { id: "comparison", label: "Compare branches", icon: <GitCompareArrows size={14} />, count: branches.length }]}>
     {tab === "overview" && <>
       {run.outcome === "failed" && diagnosis?.predictedFailureStep && <section className="trace-finding" aria-label="Investigation finding"><div><CircleAlert size={20} /><div><h2>Start with {rootStep ? titles[rootStep.stepType] || rootStep.stepType : "the flagged step"}</h2><p>{diagnosis.evidence[0] || "Recorded checks flagged this stage for investigation."}</p></div></div><button className="button" disabled={!supportsReplay} onClick={() => { chooseStep(diagnosis.predictedFailureStep || 3); setTab("replay"); }}><GitBranch size={15} />Test a correction<ArrowRight size={15} /></button></section>}
@@ -138,7 +143,28 @@ export default function TraceWorkspace({ runId }: { runId: string }) {
       {!pair ? <div className="empty-state"><GitCompareArrows size={28} /><h3>No replay branches yet</h3><button className="button" disabled={!supportsReplay} onClick={() => setTab("replay")}><GitBranch size={14} />Create a replay</button></div> : !diff ? (!diffError ? <Loading /> : null) : <>
         <div className="comparison-outcomes"><div><small>ORIGINAL EXECUTION</small><span className="mono">{shortId(diff.originalRunId)}</span><Status value={diff.originalOutcome} /></div><ArrowRight size={20} /><div><small>REPLAY BRANCH</small><Link href={`/trace/${diff.replayRunId}`} className="mono">{shortId(diff.replayRunId)}<ArrowUpRight size={12} /></Link><Status value={diff.replayOutcome} /></div><span className="comparison-verdict">{diff.originalOutcome === "failed" && diff.replayOutcome === "success" ? <><Check size={16} />Outcome improved</> : "Execution recorded"}</span></div>
         {replayResult && <div className="replay-proof"><span><CheckCheck size={14} />{replayResult.reusedSteps.length} steps reused</span><span><Play size={13} />{replayResult.executedSteps.length} steps executed</span><span><GitBranch size={13} />{replayResult.changedSteps.length} steps changed</span></div>}
-        {comparedAnswer && <div className="answer-comparison" aria-label="Answer comparison"><section><h3>Original answer</h3><p>{typeof comparedAnswer.original.outputData?.answer === "string" ? comparedAnswer.original.outputData.answer : "No answer recorded"}</p></section><section><h3>Replay answer</h3><p>{typeof comparedAnswer.replay.outputData?.answer === "string" ? comparedAnswer.replay.outputData.answer : "No answer recorded"}</p></section></div>}
+        {comparedAnswer && (() => {
+          const originalClassification = classifyRecordedOutput({ steps: diff.steps.map(item => item.original) }, comparedAnswer.original, context);
+          const replayClassification = classifyRecordedOutput({ steps: diff.steps.map(item => item.replay) }, comparedAnswer.replay, context);
+          return <div className="answer-comparison" aria-label="Answer comparison">
+            <section>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
+                <h3>Original answer</h3>
+                <span className="status neutral">{originalClassification.label}</span>
+              </div>
+              <p>{typeof comparedAnswer.original.outputData?.answer === "string" ? comparedAnswer.original.outputData.answer : "No answer recorded"}</p>
+              {originalClassification.explanation && <p className="quiet-label" style={{ marginTop: 8 }}>{originalClassification.explanation}</p>}
+            </section>
+            <section>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
+                <h3>Replay answer</h3>
+                <span className="status neutral">{replayClassification.label}</span>
+              </div>
+              <p>{typeof comparedAnswer.replay.outputData?.answer === "string" ? comparedAnswer.replay.outputData.answer : "No answer recorded"}</p>
+              {replayClassification.explanation && <p className="quiet-label" style={{ marginTop: 8 }}>{replayClassification.explanation}</p>}
+            </section>
+          </div>;
+        })()}
         <div className="diff-toolbar"><span className="quiet-label">{diff.divergenceStep ? `First divergence at step ${String(diff.divergenceStep).padStart(2, "0")}` : "No semantic differences"}</span><label><input type="checkbox" checked={changedOnly} onChange={e => setChangedOnly(e.target.checked)} />Changed steps only</label></div>
         <div className="diff-column-labels"><span>STEP</span><span>ORIGINAL OUTPUT</span><span>REPLAY OUTPUT</span></div>
         {diff.steps.filter(item => !changedOnly || item.changed).map(item => <div key={item.stepId} className={`diff-row ${item.changed ? "changed" : ""}`}><div className="diff-step"><span className="mono">{String(item.stepId).padStart(2, "0")}</span><strong>{titles[item.original?.stepType] || item.original?.stepType}</strong><small>{item.changed ? "Changed" : "Unchanged"}</small></div><JsonBlock value={item.original?.outputData || item.original?.output} /><JsonBlock value={item.replay?.outputData || item.replay?.output} /></div>)}

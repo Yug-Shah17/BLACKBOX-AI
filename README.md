@@ -72,7 +72,7 @@ Question + document sources
 Recorded answer + evidence + execution trace
 ```
 
-Document retrieval uses **topic-word matching**, not embeddings or a vector database. Source selection works within the retrieved candidates. Generation uses the configured local behavior or the optional Gemini integration. Validation applies bounded source, citation and answer checks.
+New local document runs use **weighted exact-word matching across title, topic and source text**, not embeddings or a vector database. Recorded v1/v2 runs retain their earlier topic-word behavior. Source selection works within the retrieved candidates. Generation uses the configured local behavior or the optional Gemini integration. Validation applies bounded source, citation and answer checks.
 
 A passed check is useful evidence, but it is **not proof that every answer is factually correct**.
 
@@ -101,7 +101,7 @@ The arithmetic workflow remains useful for testing the tracing and replay infras
 
 | Layer | Implementation |
 |---|---|
-| Frontend | Next.js 16.3.8, React 19.2.8, TypeScript, Tailwind CSS 4, Lucide icons |
+| Frontend | Next.js 16.4.1, React 19.2.8, TypeScript, Tailwind CSS 4, Lucide icons |
 | Backend | Python, FastAPI, Pydantic, Uvicorn |
 | Optional answering | Backend-only Gemini integration with explicit document-sharing consent |
 | Document extraction | pypdf for text PDFs; bounded DOCX XML extraction |
@@ -216,6 +216,8 @@ Raw PDF/DOCX files are not saved by the extractor, but extracted source text is 
 
 ## Verification
 
+The October 26 integration adds a direct guided local failure demonstration, checkpoint-collision protection, corrupt-trace errors and a paired retrieval evaluation. See the [Portfolio Handoff](docs/PORTFOLIO_HANDOFF.md) for checks, screenshots, a demonstration walkthrough, an interview explanation and an honest LinkedIn description. Verify the current Vercel production deployment before assuming a feature described here is live. Approved dependency patches are included; the latest recorded npm audit reported zero known vulnerabilities at the time it ran.
+
 The recorded **October 7, 2026** verification passed:
 
 - **26 frontend tests**, frontend lint and the Next.js production build.
@@ -244,6 +246,8 @@ npm run build
 ```
 
 ## Evaluation And Honest Claims
+
+The new [offline retrieval evaluation](docs/RETRIEVAL_EVALUATION.md) compares unchanged v2 with v3 on 20 developer-authored synthetic queries: relevant-source top-1 improves from **4/17 to 15/17** positive queries, with **3/3** easy negative-query abstentions in both versions. These measure source retrieval, not answer accuracy; the challenge subset is not independently held out. Reproduce with `python -m ml.evaluate_retrieval --version document-qa-v2` and `python -m ml.evaluate_retrieval`.
 
 Reproduce the evaluation from the repository root:
 

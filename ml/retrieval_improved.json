@@ -1,0 +1,348 @@
+{
+  "workflowVersion": "document-qa-v3",
+  "summary": {
+    "all": {
+      "answerableQueries": 17,
+      "negativeQueries": 3,
+      "top1Hits": 15,
+      "mrr": 0.8824,
+      "meanRecallAt3": 0.8824,
+      "correctAbstentions": 3
+    },
+    "development": {
+      "answerableQueries": 6,
+      "negativeQueries": 2,
+      "top1Hits": 6,
+      "mrr": 1.0,
+      "meanRecallAt3": 1.0,
+      "correctAbstentions": 2
+    },
+    "challenge": {
+      "answerableQueries": 11,
+      "negativeQueries": 1,
+      "top1Hits": 9,
+      "mrr": 0.8182,
+      "meanRecallAt3": 0.8182,
+      "correctAbstentions": 1
+    }
+  },
+  "queries": [
+    {
+      "id": "d01",
+      "split": "development",
+      "question": "What is the returns policy?",
+      "relevant": [
+        "returns"
+      ],
+      "retrieved": [
+        "returns",
+        "privacy"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "d02",
+      "split": "development",
+      "question": "How long does standard delivery take?",
+      "relevant": [
+        "shipping"
+      ],
+      "retrieved": [
+        "shipping"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "d03",
+      "split": "development",
+      "question": "When do scholarship applications close?",
+      "relevant": [
+        "scholarship"
+      ],
+      "retrieved": [
+        "scholarship"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "d04",
+      "split": "development",
+      "question": "How can I reset a forgotten password?",
+      "relevant": [
+        "password"
+      ],
+      "retrieved": [
+        "password"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "d05",
+      "split": "development",
+      "question": "What do parking permits cost?",
+      "relevant": [
+        "parking"
+      ],
+      "retrieved": [
+        "parking"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "d06",
+      "split": "development",
+      "question": "Where can I find the policy?",
+      "relevant": [
+        "privacy",
+        "returns"
+      ],
+      "kind": "ambiguous",
+      "retrieved": [
+        "privacy",
+        "returns"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "d07",
+      "split": "development",
+      "question": "What is the cafeteria menu?",
+      "relevant": [],
+      "kind": "negative",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": null,
+      "correctAbstention": true
+    },
+    {
+      "id": "d08",
+      "split": "development",
+      "question": "The and is of?",
+      "relevant": [],
+      "kind": "negative",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": null,
+      "correctAbstention": true
+    },
+    {
+      "id": "c01",
+      "split": "challenge",
+      "question": "How many books may students borrow?",
+      "relevant": [
+        "library"
+      ],
+      "retrieved": [
+        "library"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "c02",
+      "split": "challenge",
+      "question": "What should I bring to the examination?",
+      "relevant": [
+        "exam"
+      ],
+      "retrieved": [
+        "exam"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "c03",
+      "split": "challenge",
+      "question": "What happens to personal data after account closure?",
+      "relevant": [
+        "privacy"
+      ],
+      "retrieved": [
+        "privacy",
+        "password"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "c04",
+      "split": "challenge",
+      "question": "Are calculators allowed?",
+      "relevant": [
+        "exam"
+      ],
+      "retrieved": [
+        "exam"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "c05",
+      "split": "challenge",
+      "question": "Who handles chemical spills?",
+      "relevant": [
+        "lab"
+      ],
+      "retrieved": [
+        "lab"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "c06",
+      "split": "challenge",
+      "question": "Does medical leave need a certificate?",
+      "relevant": [
+        "leave"
+      ],
+      "retrieved": [
+        "leave"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "c07",
+      "split": "challenge",
+      "question": "Do installments require approval?",
+      "relevant": [
+        "fees"
+      ],
+      "retrieved": [
+        "fees"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "c08",
+      "split": "challenge",
+      "question": "When are the payment deadlines?",
+      "relevant": [
+        "fees"
+      ],
+      "retrieved": [
+        "fees"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "c09",
+      "split": "challenge",
+      "question": "What are the campus services?",
+      "relevant": [
+        "library",
+        "parking"
+      ],
+      "kind": "ambiguous",
+      "retrieved": [
+        "library",
+        "parking"
+      ],
+      "firstRelevantRank": 1,
+      "top1": true,
+      "reciprocalRank": 1.0,
+      "recallAt3": 1.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "c10",
+      "split": "challenge",
+      "question": "Is there a swimming pool?",
+      "relevant": [],
+      "kind": "negative",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": null,
+      "correctAbstention": true
+    },
+    {
+      "id": "c11",
+      "split": "challenge",
+      "question": "How can I recover my login credentials?",
+      "relevant": [
+        "password"
+      ],
+      "kind": "paraphrase",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": 0.0,
+      "correctAbstention": null
+    },
+    {
+      "id": "c12",
+      "split": "challenge",
+      "question": "Can I return damaged purchases?",
+      "relevant": [
+        "returns"
+      ],
+      "kind": "missing-detail",
+      "retrieved": [],
+      "firstRelevantRank": null,
+      "top1": false,
+      "reciprocalRank": 0,
+      "recallAt3": 0.0,
+      "correctAbstention": null
+    }
+  ]
+}

@@ -179,6 +179,36 @@ class RobustnessTests(unittest.TestCase):
         self.assertEqual(response.json()["reusedSteps"], [1, 2])
         self.assertEqual(self.client.get(f"/runs/{first['replayRunId']}").json(), saved)
 
+    def test_corrupt_observed_trace_returns_conflict_without_saving(self):
+        run = self.client.post("/runs", json={"failureType": "calculation_error"}).json()
+        path = self.directory / "state.json"
+        saved = json.loads(path.read_text())
+        body = {"checkpointStep": 3,
+                "alternativeAction": {"type": "replace_output", "output": {"result": 42}}}
+        for observed in ({}, {"steps": []}, None):
+            with self.subTest(observed=observed):
+                state = copy.deepcopy(saved)
+                if observed is None:
+                    state["runs"][run["runId"]]["observed"]["steps"][0]["checkpointId"] = "other"
+                else:
+                    state["runs"][run["runId"]]["observed"] = observed
+                path.write_text(json.dumps(state), encoding="utf-8")
+                before = path.read_bytes()
+                response = self.client.post(f"/runs/{run['runId']}/replay", json=body)
+                self.assertEqual(response.status_code, 409)
+                self.assertEqual(path.read_bytes(), before)
+
+    def test_checkpoint_collision_cannot_replace_original_snapshots(self):
+        run = self.client.post("/runs", json={}).json()
+        store = self.app.state.store
+        before = store.path.read_bytes()
+        replacement = copy.deepcopy(store.get(run["runId"]))
+        replacement["public"]["runId"] = "new-run"
+        checkpoint_id = run["steps"][0]["checkpointId"]
+        with self.assertRaises(StorageError):
+            store.save(replacement, {checkpoint_id: {"runId": "new-run"}})
+        self.assertEqual(store.path.read_bytes(), before)
+
     def test_model_uses_saved_trace_not_client_annotations(self):
         run = self.client.post("/runs", json={"failureType": "calculation_error"}).json()
         run["predictedFailureStep"] = 1
@@ -202,6 +232,19 @@ class RobustnessTests(unittest.TestCase):
                 save(21)
         self.assertEqual(store.path.read_bytes(), before)
         self.assertEqual(list(store.directory.glob("state-*.tmp")), [])
+
+    def test_failed_temporary_cleanup_preserves_storage_error_and_original(self):
+        original = self.client.post("/runs", json={}).json()
+        store = self.app.state.store
+        before = store.path.read_bytes()
+        with patch("backend.app.services.store.os.replace", side_effect=OSError("disk error")), \
+                patch("backend.app.services.store.Path.unlink", side_effect=PermissionError("cleanup denied")):
+            response = self.client.post("/runs", json={})
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json(), {"detail": "Could not persist run data"})
+        self.assertEqual(store.path.read_bytes(), before)
+        self.assertEqual(self.client.get(f"/runs/{original['runId']}").json(), original)
+        self.assertEqual(len(list(store.directory.glob("state-*.tmp"))), 1)
 
     def test_malformed_store_records_return_service_error(self):
         run = self.client.post("/runs", json={"failureType": "normal"}).json()
