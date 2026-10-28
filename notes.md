@@ -191,7 +191,7 @@ Then open `http://127.0.0.1:3000/`. The setup script installs the already declar
 - The free backend may sleep, restart, or lose saved runs. Download results you need to keep.
 - Use fictional or non-sensitive documents only. Uploaded text can be saved with a run.
 - Gemini is optional. Its use sends selected document text and the question to Google after consent. Free-tier data handling is controlled by Google’s account terms; the app cannot verify billing or provider settings.
-- The latest reviewed code has not been merged to `main` or deployed. The current public URL may show an earlier release. Do not say a feature is live until you verify it in the deployed demo.
+- The public deployment can differ from the reviewed source. Before presenting a feature as live, check the current deployment and try that feature in the public demo.
 
 ## 8. Interview questions you should be ready for
 
@@ -242,7 +242,7 @@ Example LinkedIn description:
 >
 > The project also includes a separate synthetic arithmetic step-ranking experiment using scikit-learn. I evaluated a transparent exact-word retrieval change on small synthetic sets and published both gains and failures—including worse unsupported-question abstention on a separate review set. Document diagnosis is rule-based; the retriever is not a trained model. This is a learning prototype, not a private document service or an autonomous repair system.
 
-Before posting, verify the public demo shows the version you describe. The latest code is on a draft review branch and has not been deployed to production. Avoid phrases like “100% accurate AI,” “automatically fixes hallucinations,” “trained RAG model,” “production-ready,” or “beats embeddings.”
+Before posting, verify the public demo shows the version you describe. Avoid phrases like “100% accurate AI,” “automatically fixes hallucinations,” “trained RAG model,” “production-ready,” or “beats embeddings.”
 
 ## 10. Small glossary
 

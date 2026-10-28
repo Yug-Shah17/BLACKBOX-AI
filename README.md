@@ -216,7 +216,7 @@ Raw PDF/DOCX files are not saved by the extractor, but extracted source text is 
 
 ## Verification
 
-The October 26 integration adds a direct guided local failure demonstration, checkpoint-collision protection, corrupt-trace errors and a paired retrieval evaluation. See the [Portfolio Handoff](docs/PORTFOLIO_HANDOFF.md) for current checks, screenshots, a demonstration walkthrough, an interview explanation and an honest LinkedIn description. **The integration is not deployed. Approved dependency patches are included; the current npm audit reports zero known vulnerabilities.**
+The October 26 integration adds a direct guided local failure demonstration, checkpoint-collision protection, corrupt-trace errors and a paired retrieval evaluation. See the [Portfolio Handoff](docs/PORTFOLIO_HANDOFF.md) for checks, screenshots, a demonstration walkthrough, an interview explanation and an honest LinkedIn description. Verify the current Vercel production deployment before assuming a feature described here is live. Approved dependency patches are included; the latest recorded npm audit reported zero known vulnerabilities at the time it ran.
 
 The recorded **October 7, 2026** verification passed:
 

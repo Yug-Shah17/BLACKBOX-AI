@@ -66,6 +66,6 @@ There are two distinct forms of diagnosis in this project. Document diagnosis us
 
 **What would you improve next?** Independently annotated realistic retrieval data, a tested answerability approach, and stronger persistence if multiple workers/users were needed. I would first measure those needs rather than add infrastructure or claim the demo already solves them.
 
-**What remains unverified?** The latest output labels' mobile/theme/Escape/download pass is blocked by a saved browser permission. Earlier checks cover an earlier revision. Shared temporary history, exact-token retrieval and unsupported-question handling remain product limits. Main has not been merged and this integration has not been deployed to production.
+**What remains unverified?** The latest output labels' mobile/theme/Escape/download pass is blocked by a saved browser permission. Earlier checks cover an earlier revision. Shared temporary history, exact-token retrieval and unsupported-question handling remain product limits. Check the current production deployment before assuming a feature in the source is live.
 
 Primary files to inspect: `frontend/src/lib/api.ts`, `frontend/src/components/workspace/trace.tsx`, `frontend/src/components/workspace/document-evidence.tsx`, `backend/app/routes/documents.py`, `backend/app/services/documents.py`, `backend/app/services/store.py`, and `ml/abstention_study.py`. Start with one recorded run and follow its IDs rather than trying to memorize every file.
